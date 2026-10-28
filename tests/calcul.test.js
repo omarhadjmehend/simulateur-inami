@@ -452,3 +452,10 @@ test('audit : 65+ bifocal minéral 1,60 est un indice élevé', () => {
   const r = simuler(base({ dateNaissance: '1955-01-01', typeVerre: 'bifocal', materiau: 'mineral', indice: 1.6, yeux: { od: { sph: 4.5 }, og: null } }), inami, mutualites);
   assert.equal(r.yeux.od.code, '742070');
 });
+
+test('vérification 28/10/2026 : Mutualité libérale s\'ajoute à l\'INAMI (un seul scénario)', () => {
+  const r = simuler(base({ mutualiteId: 'liberale' }), inami, mutualites);
+  assert.ok(r.inami.total > 0);
+  assert.equal(r.mutualite.scenarios.length, 1);
+  assert.equal(r.mutualite.scenarios[0].montant, 50);
+});
