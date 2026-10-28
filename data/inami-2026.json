@@ -1,0 +1,831 @@
+{
+  "version": "2026-01-01",
+  "source": "https://www.inami.fgov.be/SiteCollectionDocuments/tarif_opticiens_20260101.pdf",
+  "verified_on": "2026-10-27",
+  "note": "Tarifs opticiens non indexés au 01/01/2026 (décision du 06/11/2025) : montants identiques à 2025, recalculés en points Z × coefficient. honoraire = remboursement chez un opticien conventionné ou pour un patient BIM ; reduit = colonne à 75 % (opticien non conventionné, patient non BIM). Hors simulateur : verres lenticulaires, filtres médicaux, prismes.",
+  "seuils": {
+    "tous_ages": 6.0,
+    "enfant_max": 5.75,
+    "senior_min": 4.25,
+    "age_enfant_max": 18,
+    "age_senior_min": 65
+  },
+  "renouvellement": {
+    "mois_enfant": 24,
+    "mois_adulte": 60
+  },
+  "prescription_validite_mois": 6,
+  "supplement_cylindre": {
+    "seuil": 6.0,
+    "par_categorie": {
+      "1": {
+        "code": "741635",
+        "honoraire": 95.92,
+        "reduit": 71.94
+      },
+      "2": {
+        "code": "741996",
+        "honoraire": 26.68,
+        "reduit": 20.01
+      },
+      "3": {
+        "code": "742276",
+        "honoraire": 26.35,
+        "reduit": 19.77
+      }
+    }
+  },
+  "monture_enfant": {
+    "code": "742711",
+    "honoraire": 29.51,
+    "reduit": 22.14,
+    "max_interventions": 2,
+    "premiere_avec_verre": true
+  },
+  "reduction_non_conventionne": {
+    "taux": 0.25,
+    "exception_bim": true,
+    "a_confirmer": false,
+    "note": "Appliquée en pratique (affiche INAMI pour opticiens non conventionnés, page CM) : la colonne non conventionné du tarif vaut 75 % du montant, sauf patient BIM."
+  },
+  "indice_eleve": {
+    "organique": 1.6,
+    "mineral": 1.7,
+    "mineral_bifocal_65": 1.6
+  },
+  "enfant_indice_eleve_min_dioptrie": 3.75,
+  "codes": [
+    {
+      "code": "741016",
+      "categorie": 1,
+      "type": "unifocal",
+      "materiau": "mineral",
+      "indice": "bas",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 82.22,
+      "reduit": 61.67
+    },
+    {
+      "code": "741031",
+      "categorie": 1,
+      "type": "unifocal",
+      "materiau": "mineral",
+      "indice": "bas",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 82.22,
+      "reduit": 61.67
+    },
+    {
+      "code": "741053",
+      "categorie": 1,
+      "type": "unifocal",
+      "materiau": "organique",
+      "indice": "bas",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 86.43,
+      "reduit": 64.83
+    },
+    {
+      "code": "741075",
+      "categorie": 1,
+      "type": "unifocal",
+      "materiau": "organique",
+      "indice": "bas",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 86.43,
+      "reduit": 64.83
+    },
+    {
+      "code": "741090",
+      "categorie": 1,
+      "type": "unifocal",
+      "materiau": "mineral",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 134.92,
+      "reduit": 101.19
+    },
+    {
+      "code": "741112",
+      "categorie": 1,
+      "type": "unifocal",
+      "materiau": "mineral",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 134.92,
+      "reduit": 101.19
+    },
+    {
+      "code": "741134",
+      "categorie": 1,
+      "type": "unifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 114.89,
+      "reduit": 86.17
+    },
+    {
+      "code": "741156",
+      "categorie": 1,
+      "type": "unifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 114.89,
+      "reduit": 86.17
+    },
+    {
+      "code": "741252",
+      "categorie": 1,
+      "type": "bifocal",
+      "materiau": "mineral",
+      "indice": "tous",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 158.11,
+      "reduit": 118.59
+    },
+    {
+      "code": "741274",
+      "categorie": 1,
+      "type": "bifocal",
+      "materiau": "mineral",
+      "indice": "tous",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 158.11,
+      "reduit": 118.59
+    },
+    {
+      "code": "741296",
+      "categorie": 1,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "bas",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 143.35,
+      "reduit": 107.52
+    },
+    {
+      "code": "741311",
+      "categorie": 1,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "bas",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 162.33,
+      "reduit": 121.75
+    },
+    {
+      "code": "741333",
+      "categorie": 1,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 174.98,
+      "reduit": 131.24
+    },
+    {
+      "code": "741355",
+      "categorie": 1,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        4
+      ],
+      "honoraire": 204.49,
+      "reduit": 153.37
+    },
+    {
+      "code": "741370",
+      "categorie": 1,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        4.25,
+        6
+      ],
+      "honoraire": 237.17,
+      "reduit": 177.88
+    },
+    {
+      "code": "741473",
+      "categorie": 1,
+      "type": "progressif",
+      "materiau": "mineral",
+      "indice": "bas",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 217.14,
+      "reduit": 162.86
+    },
+    {
+      "code": "741495",
+      "categorie": 1,
+      "type": "progressif",
+      "materiau": "mineral",
+      "indice": "bas",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 217.14,
+      "reduit": 162.86
+    },
+    {
+      "code": "741510",
+      "categorie": 1,
+      "type": "progressif",
+      "materiau": "organique",
+      "indice": "bas",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 216.08,
+      "reduit": 162.06
+    },
+    {
+      "code": "741532",
+      "categorie": 1,
+      "type": "progressif",
+      "materiau": "organique",
+      "indice": "bas",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 235.06,
+      "reduit": 176.3
+    },
+    {
+      "code": "741554",
+      "categorie": 1,
+      "type": "progressif",
+      "materiau": "mineral",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 221.35,
+      "reduit": 166.02
+    },
+    {
+      "code": "741576",
+      "categorie": 1,
+      "type": "progressif",
+      "materiau": "mineral",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 247.71,
+      "reduit": 185.79
+    },
+    {
+      "code": "741591",
+      "categorie": 1,
+      "type": "progressif",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 307.79,
+      "reduit": 230.85
+    },
+    {
+      "code": "741613",
+      "categorie": 1,
+      "type": "progressif",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 332.03,
+      "reduit": 249.03
+    },
+    {
+      "code": "741694",
+      "categorie": 2,
+      "type": "unifocal",
+      "materiau": "organique",
+      "indice": "tous",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 45.88,
+      "reduit": 34.41
+    },
+    {
+      "code": "741716",
+      "categorie": 2,
+      "type": "unifocal",
+      "materiau": "organique",
+      "indice": "tous",
+      "cyl": [
+        0.25,
+        3
+      ],
+      "honoraire": 45.88,
+      "reduit": 34.41
+    },
+    {
+      "code": "741731",
+      "categorie": 2,
+      "type": "unifocal",
+      "materiau": "organique",
+      "indice": "tous",
+      "cyl": [
+        3.25,
+        6
+      ],
+      "honoraire": 64.02,
+      "reduit": 48.02
+    },
+    {
+      "code": "743514",
+      "categorie": 2,
+      "type": "unifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 116.3,
+      "reduit": 87.23,
+      "puissance": [
+        0,
+        3.5
+      ]
+    },
+    {
+      "code": "741753",
+      "categorie": 2,
+      "type": "unifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 116.3,
+      "reduit": 87.23,
+      "puissance": [
+        3.75,
+        5.75
+      ]
+    },
+    {
+      "code": "743536",
+      "categorie": 2,
+      "type": "unifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 116.3,
+      "reduit": 87.23,
+      "puissance": [
+        0,
+        3.5
+      ]
+    },
+    {
+      "code": "741775",
+      "categorie": 2,
+      "type": "unifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 116.3,
+      "reduit": 87.23,
+      "puissance": [
+        3.75,
+        5.75
+      ]
+    },
+    {
+      "code": "741790",
+      "categorie": 2,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "bas",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 126.97,
+      "reduit": 95.23
+    },
+    {
+      "code": "741812",
+      "categorie": 2,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "bas",
+      "cyl": [
+        0.25,
+        3
+      ],
+      "honoraire": 126.97,
+      "reduit": 95.23
+    },
+    {
+      "code": "741834",
+      "categorie": 2,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "bas",
+      "cyl": [
+        3.25,
+        6
+      ],
+      "honoraire": 142.98,
+      "reduit": 107.24
+    },
+    {
+      "code": "743551",
+      "categorie": 2,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 147.25,
+      "reduit": 110.44,
+      "puissance": [
+        0,
+        3.5
+      ]
+    },
+    {
+      "code": "741856",
+      "categorie": 2,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 147.25,
+      "reduit": 110.44,
+      "puissance": [
+        3.75,
+        5.75
+      ]
+    },
+    {
+      "code": "743573",
+      "categorie": 2,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        3
+      ],
+      "honoraire": 162.19,
+      "reduit": 121.65,
+      "puissance": [
+        0,
+        3.5
+      ]
+    },
+    {
+      "code": "741871",
+      "categorie": 2,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        3
+      ],
+      "honoraire": 162.19,
+      "reduit": 121.65,
+      "puissance": [
+        3.75,
+        5.75
+      ]
+    },
+    {
+      "code": "743595",
+      "categorie": 2,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        3.25,
+        6
+      ],
+      "honoraire": 183.53,
+      "reduit": 137.65,
+      "puissance": [
+        0,
+        3.5
+      ]
+    },
+    {
+      "code": "741893",
+      "categorie": 2,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        3.25,
+        6
+      ],
+      "honoraire": 183.53,
+      "reduit": 137.65,
+      "puissance": [
+        3.75,
+        5.75
+      ]
+    },
+    {
+      "code": "741915",
+      "categorie": 2,
+      "type": "progressif",
+      "materiau": "organique",
+      "indice": "tous",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 197.4,
+      "reduit": 148.05
+    },
+    {
+      "code": "741930",
+      "categorie": 2,
+      "type": "progressif",
+      "materiau": "organique",
+      "indice": "tous",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 218.74,
+      "reduit": 164.06
+    },
+    {
+      "code": "743610",
+      "categorie": 2,
+      "type": "progressif",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 311.57,
+      "reduit": 233.68,
+      "puissance": [
+        0,
+        3.5
+      ]
+    },
+    {
+      "code": "741952",
+      "categorie": 2,
+      "type": "progressif",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 311.57,
+      "reduit": 233.68,
+      "puissance": [
+        3.75,
+        5.75
+      ]
+    },
+    {
+      "code": "743632",
+      "categorie": 2,
+      "type": "progressif",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 336.11,
+      "reduit": 252.09,
+      "puissance": [
+        0,
+        3.5
+      ]
+    },
+    {
+      "code": "741974",
+      "categorie": 2,
+      "type": "progressif",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 336.11,
+      "reduit": 252.09,
+      "puissance": [
+        3.75,
+        5.75
+      ]
+    },
+    {
+      "code": "742070",
+      "categorie": 3,
+      "type": "bifocal",
+      "materiau": "mineral",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 94.87,
+      "reduit": 71.16
+    },
+    {
+      "code": "742092",
+      "categorie": 3,
+      "type": "bifocal",
+      "materiau": "mineral",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        4
+      ],
+      "honoraire": 117.0,
+      "reduit": 87.75
+    },
+    {
+      "code": "742114",
+      "categorie": 3,
+      "type": "bifocal",
+      "materiau": "mineral",
+      "indice": "haut",
+      "cyl": [
+        4.25,
+        6
+      ],
+      "honoraire": 140.19,
+      "reduit": 105.15
+    },
+    {
+      "code": "742136",
+      "categorie": 3,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 145.46,
+      "reduit": 109.1
+    },
+    {
+      "code": "742151",
+      "categorie": 3,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        4
+      ],
+      "honoraire": 160.22,
+      "reduit": 120.17
+    },
+    {
+      "code": "742173",
+      "categorie": 3,
+      "type": "bifocal",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        4.25,
+        6
+      ],
+      "honoraire": 181.3,
+      "reduit": 135.98
+    },
+    {
+      "code": "742195",
+      "categorie": 3,
+      "type": "progressif",
+      "materiau": "mineral",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 221.35,
+      "reduit": 166.02
+    },
+    {
+      "code": "742210",
+      "categorie": 3,
+      "type": "progressif",
+      "materiau": "mineral",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 247.71,
+      "reduit": 185.79
+    },
+    {
+      "code": "742232",
+      "categorie": 3,
+      "type": "progressif",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0,
+        0
+      ],
+      "honoraire": 307.79,
+      "reduit": 230.85
+    },
+    {
+      "code": "742254",
+      "categorie": 3,
+      "type": "progressif",
+      "materiau": "organique",
+      "indice": "haut",
+      "cyl": [
+        0.25,
+        6
+      ],
+      "honoraire": 332.03,
+      "reduit": 249.03
+    }
+  ],
+  "prescription_reference": "Les 6 mois courent de la date de la prescription à la date de réception de la prescription par l'opticien (art. 30, 2.4.1)."
+}
