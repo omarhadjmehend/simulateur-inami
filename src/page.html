@@ -36,6 +36,7 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body {
   background: var(--bg); color: var(--ink);
   font-family: var(--font-body); font-size: 15px; line-height: 1.45;
@@ -112,6 +113,18 @@ ul.docs { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; font-size: 0.
 .disclaimer { font-size: 0.8rem; color: var(--muted); margin: 0; }
 .example-flag { font-size: 0.78rem; font-weight: 700; color: var(--warn); background: var(--warn-soft); border-radius: 999px; padding: 3px 10px; }
 a { color: var(--accent); }
+.recap { display: none; }
+@media print {
+  /* Fiche client : seulement le résultat et un récapitulatif de la saisie */
+  :root { --bg: #fff; --surface: #fff; --ink: #000; --muted: #444; --line: #bbb; }
+  body { padding: 0; font-size: 12px; }
+  .actions, form, .eye .hint, #mutualite .hint { display: none !important; }
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .result { position: static; }
+  .panel, .warn { break-inside: avoid; }
+  .recap { display: grid; }
+  .total .big { font-size: 2rem; }
+}
 </style>
 
 <div class="wrap">
@@ -124,6 +137,7 @@ a { color: var(--accent); }
       <div class="seg lang" role="radiogroup" aria-label="Langue / Taal"><label><input type="radio" name="lang" id="langFr" value="fr" checked>FR</label><label><input type="radio" name="lang" id="langNl" value="nl">NL</label></div>
       <span class="example-flag" id="exampleFlag" data-i18n="exemple">Dossier d'exemple</span>
       <button type="button" class="btn" id="btnExemple" data-i18n="btnExemple">Exemple</button>
+      <button type="button" class="btn" id="btnImprimer" data-i18n="btnImprimer">Imprimer</button>
       <button type="button" class="btn primary" id="btnReset" data-i18n="btnReset">Nouveau client</button>
     </div>
   </header>
@@ -209,6 +223,10 @@ a { color: var(--accent); }
     </form>
 
     <aside class="result" aria-live="polite">
+      <section class="panel recap">
+        <h2 data-i18n="hRecap">Récapitulatif</h2>
+        <dl class="lines" id="recap"></dl>
+      </section>
       <section class="panel">
         <h2 data-i18n="hReste">Reste à payer</h2>
         <div id="totaux"></div>
@@ -241,7 +259,8 @@ const UI = {
   fr: {
     titre: 'Simulateur INAMI optique',
     sous: "Remboursement INAMI et mutualité d'une paire de lunettes, calculé au comptoir. Rien n'est enregistré.",
-    exemple: "Dossier d'exemple", btnExemple: 'Exemple', btnReset: 'Nouveau client',
+    exemple: "Dossier d'exemple", btnExemple: 'Exemple', btnReset: 'Nouveau client', btnImprimer: 'Imprimer',
+    hRecap: 'Récapitulatif', rDelivrance: 'Délivrance', rAge: 'Âge', ans: (n) => `${n} ans`, rVerre: 'Verres', rMut: 'Mutualité',
     lgClient: 'Client', naissance: 'Date de naissance', delivrance: 'Date de délivrance',
     bim: 'Statut BIM (intervention majorée)', conv: 'Opticien conventionné',
     lgCorrection: 'Correction de loin', uni: 'Unifocal', bi: 'Bifocal', prog: 'Progressif', sph: 'Sphère', cyl: 'Cylindre',
@@ -268,13 +287,14 @@ const UI = {
     avantageMut: 'Avantage mutualité', source: "Source de l'avantage",
     datePrescManquante: "Date de prescription non renseignée : vérifie qu'elle a moins de 6 mois.",
     aucunDoc: 'Aucun document de remboursement nécessaire',
-    disclaimer: (v) => `Estimation indicative, non contractuelle. Le remboursement final est décidé par la mutualité. Outil indépendant, non affilié à l'INAMI, à une mutualité ou à une enseigne. Tarifs : fichier INAMI du 01/01/2026${v ? ', vérifiés le ' + v : ' (vérification officielle en cours)'}.`,
+    disclaimer: (v) => `Estimation indicative, non contractuelle. Le remboursement final est décidé par la mutualité. Outil indépendant, non affilié à l'INAMI, à une mutualité ou à une enseigne. Tarifs : fichier INAMI du 01/01/2026${v ? ', vérifiés le ' + dateFr(v) : ' (vérification officielle en cours)'}.`,
     locale: 'fr-BE',
   },
   nl: {
     titre: 'RIZIV-simulator optiek',
     sous: 'Terugbetaling door het RIZIV en het ziekenfonds voor een bril, berekend aan de toonbank. Er wordt niets bewaard.',
-    exemple: 'Voorbeelddossier', btnExemple: 'Voorbeeld', btnReset: 'Nieuwe klant',
+    exemple: 'Voorbeelddossier', btnExemple: 'Voorbeeld', btnReset: 'Nieuwe klant', btnImprimer: 'Afdrukken',
+    hRecap: 'Overzicht', rDelivrance: 'Aflevering', rAge: 'Leeftijd', ans: (n) => `${n} jaar`, rVerre: 'Glazen', rMut: 'Ziekenfonds',
     lgClient: 'Klant', naissance: 'Geboortedatum', delivrance: 'Datum van aflevering',
     bim: 'Verhoogde tegemoetkoming (VT)', conv: 'Opticien met conventie',
     lgCorrection: 'Correctie veraf', uni: 'Enkelvoudig', bi: 'Bifocaal', prog: 'Multifocaal', sph: 'Sfeer', cyl: 'Cilinder',
@@ -301,7 +321,7 @@ const UI = {
     avantageMut: 'Voordeel ziekenfonds', source: 'Bron van het voordeel',
     datePrescManquante: 'Datum van het voorschrift niet ingevuld: controleer of het minder dan 6 maanden oud is.',
     aucunDoc: 'Geen documenten nodig voor terugbetaling',
-    disclaimer: (v) => `Indicatieve, niet-bindende schatting. Het ziekenfonds beslist over de uiteindelijke terugbetaling. Onafhankelijke tool, niet verbonden aan het RIZIV, een ziekenfonds of een keten. Tarieven: RIZIV-bestand van 01/01/2026${v ? ', nagekeken op ' + v : ' (officiële controle lopende)'}.`,
+    disclaimer: (v) => `Indicatieve, niet-bindende schatting. Het ziekenfonds beslist over de uiteindelijke terugbetaling. Onafhankelijke tool, niet verbonden aan het RIZIV, een ziekenfonds of een keten. Tarieven: RIZIV-bestand van 01/01/2026${v ? ', nagekeken op ' + dateFr(v) : ' (officiële controle lopende)'}.`,
     locale: 'nl-BE',
   },
 };
@@ -311,7 +331,8 @@ let lang = 'fr';
 try { const l = localStorage.getItem('lang'); if (l === 'nl' || l === 'fr') lang = l; } catch (e) {}
 const U = () => UI[lang];
 const euro = (n) => n.toLocaleString(U().locale, { style: 'currency', currency: 'EUR' });
-const iso = (d) => d.toISOString().slice(0, 10);
+const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const dateFr = (s) => s ? s.slice(0, 10).split('-').reverse().join('/') : '';
 const today = new Date();
 const ilYa = (mois) => { const d = new Date(today); d.setMonth(d.getMonth() - mois); return iso(d); };
 const sel = $('mutualiteId');
@@ -391,7 +412,7 @@ function majPartenaire() {
 
 function vide(msg) {
   $('totaux').innerHTML = `<p class="hint">${msg}</p>`;
-  for (const id of ['yeux', 'detail', 'mutualite', 'documents']) $(id).innerHTML = '';
+  for (const id of ['yeux', 'detail', 'mutualite', 'documents', 'recap']) $(id).innerHTML = '';
   $('avertissements').hidden = true;
 }
 
@@ -443,6 +464,14 @@ function calculer() {
   $('avertissements').hidden = av.length === 0;
   $('avertissements').innerHTML = av.map((a) => `<p>${a}</p>`).join('');
 
+  const rx = (o) => (o ? `${fmtD(o.sph)} (${fmtD(o.cyl)})` : '—');
+  const verre = { unifocal: t.uni, bifocal: t.bi, progressif: t.prog }[e.typeVerre] +
+    (e.materiau ? ' · ' + t[e.materiau] : '') + (e.indice ? ' ' + e.indice.toFixed(2).replace('.', ',') : '');
+  $('recap').innerHTML = [
+    [t.rDelivrance, dateFr(e.dateDelivrance)], [t.rAge, t.ans(r.age)], [t.rVerre, verre],
+    ['OD', rx(e.yeux.od)], ['OG', rx(e.yeux.og)], [t.rMut, r.mutualite.nom || t.jeNeSaisPas],
+  ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+
   $('documents').innerHTML = (r.documents.length ? r.documents : [t.aucunDoc]).map((d) => `<li>${d}</li>`).join('');
 }
 
@@ -455,6 +484,7 @@ document.querySelectorAll('input[name="lang"]').forEach((el) => el.addEventListe
   appliquerLangue();
 }));
 $('btnReset').addEventListener('click', () => { exemple = false; $('exampleFlag').hidden = true; remplir(VIDE); });
+$('btnImprimer').addEventListener('click', () => window.print());
 $('btnExemple').addEventListener('click', () => { remplir(EXEMPLE); exemple = true; $('exampleFlag').hidden = false; });
 appliquerLangue();
 remplir(EXEMPLE);

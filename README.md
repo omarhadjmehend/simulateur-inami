@@ -17,6 +17,7 @@ Les règles INAMI (article 30 de la nomenclature) et les avantages des mutualit�
 - Deux scénarios quand la règle de cumul d'une mutualité est inconnue
 - Reste à payer (jamais plus que le prix saisi), documents à remettre, niveau de fiabilité de chaque source
 - Interface et explications en français et en néerlandais
+- Fiche imprimable pour le client : récapitulatif de la saisie, reste à payer, détail et documents à remettre
 
 Hors v1 : lentilles de contact, verres lenticulaires, filtres médicaux, prismes, basse vision.
 
@@ -37,6 +38,8 @@ Les montants sont dans les fichiers de données, pas dans le code : une indexati
 npm test        # lance les tests (Node 20 ou plus, aucune installation)
 npm run build   # génère dist/simulateur.html
 ```
+
+Les tests et le build tournent aussi sur GitHub Actions à chaque push sur `main` et à chaque pull request.
 
 ## Avant une mise en ligne publique
 
