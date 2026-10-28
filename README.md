@@ -18,6 +18,8 @@ Les règles INAMI (article 30 de la nomenclature) et les avantages des mutualit�
 - Reste à payer (jamais plus que le prix saisi), documents à remettre, niveau de fiabilité de chaque source
 - Interface et explications en français et en néerlandais
 - Fiche imprimable pour le client : récapitulatif de la saisie, reste à payer, détail et documents à remettre
+- Sur téléphone, le total reste affiché en bas de l'écran pendant la saisie
+- Aucun appel à un serveur externe : polices intégrées à la page, fonctionne hors ligne une fois ouverte
 
 Hors v1 : lentilles de contact, verres lenticulaires, filtres médicaux, prismes, basse vision.
 
@@ -28,7 +30,8 @@ Hors v1 : lentilles de contact, verres lenticulaires, filtres médicaux, prismes
 - `src/calcul.js` : la logique de calcul, une fonction pure sans dépendance
 - `src/page.html` : l'interface
 - `tests/calcul.test.js` : 79 tests sur les cas limites de l'article 30 et des mutualités, dont un par point relevé lors d'un audit indépendant
-- `build.js` : assemble une page HTML autonome dans `dist/`
+- `fonts/` : polices (licence SIL OFL 1.1), intégrées à la page au build
+- `build.js` : assemble une page HTML autonome dans `dist/` (`simulateur.html` et `index.html`)
 
 Les montants sont dans les fichiers de données, pas dans le code : une indexation INAMI se met à jour en changeant un fichier.
 
@@ -40,6 +43,12 @@ npm run build   # génère dist/simulateur.html
 ```
 
 Les tests et le build tournent aussi sur GitHub Actions à chaque push sur `main` et à chaque pull request.
+
+## Mise en ligne
+
+À chaque push sur `main`, GitHub Actions relance les tests, construit la page et la publie sur GitHub Pages : https://omarhadjmehend.github.io/simulateur-inami/
+
+À activer une seule fois : dans le dépôt GitHub, Settings → Pages → Source : « GitHub Actions ».
 
 ## Avant une mise en ligne publique
 
