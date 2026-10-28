@@ -1,0 +1,11 @@
+{
+  "name": "simulateur-inami",
+  "version": "0.1.0",
+  "description": "Simulateur INAMI + mutualité pour opticiens indépendants belges (estimation, aucune donnée stockée)",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "build": "node build.js"
+  },
+  "license": "MIT"
+}
