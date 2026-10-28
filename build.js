@@ -6,8 +6,6 @@ const lire = (p) => readFileSync(new URL(p, import.meta.url), 'utf8');
 
 // Polices intégrées à la page : aucun appel à un serveur externe (RGPD), fonctionne hors ligne
 const POLICES = [
-  ['Atkinson Hyperlegible', 400, 'atkinson-400'],
-  ['Atkinson Hyperlegible', 700, 'atkinson-700'],
   ['Barlow Semi Condensed', 600, 'barlow-sc-600'],
   ['Barlow Semi Condensed', 700, 'barlow-sc-700'],
 ];
