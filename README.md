@@ -14,9 +14,10 @@ Les règles INAMI (article 30 de la nomenclature) et les avantages des mutualit�
 - Supplément cylindre > 6 D et monture enfant (2 interventions max), montants selon la catégorie
 - Réduction de 25 % chez un opticien non conventionné, sauf patient BIM, avec les montants arrondis du tarif officiel
 - Avantage de 12 mutualités : cumul avec l'INAMI, magasin partenaire, âge adulte propre à chaque mutualité, période glissante ou par année civile, prescription exigée par la mutualité
-- Deux scénarios quand la règle de cumul d'une mutualité est inconnue
+- Règle de cumul connue pour les 12 mutualités ; deux scénarios si une mutualité ajoutée a une règle inconnue
 - Reste à payer (jamais plus que le prix saisi), documents à remettre, niveau de fiabilité de chaque source
 - Interface et explications en français et en néerlandais
+- Fiche imprimable pour le client : récapitulatif de la saisie, reste à payer, détail et documents à remettre
 
 Hors v1 : lentilles de contact, verres lenticulaires, filtres médicaux, prismes, basse vision.
 
@@ -26,7 +27,7 @@ Hors v1 : lentilles de contact, verres lenticulaires, filtres médicaux, prismes
 - `data/mutualites.json` : avantages des mutualités, avec source, date de vérification et fiabilité
 - `src/calcul.js` : la logique de calcul, une fonction pure sans dépendance
 - `src/page.html` : l'interface
-- `tests/calcul.test.js` : 75 tests sur les cas limites de l'article 30 et des mutualités, dont un par point relevé lors d'un audit indépendant
+- `tests/calcul.test.js` : 79 tests sur les cas limites de l'article 30 et des mutualités, dont un par point relevé lors d'un audit indépendant
 - `build.js` : assemble une page HTML autonome dans `dist/`
 
 Les montants sont dans les fichiers de données, pas dans le code : une indexation INAMI se met à jour en changeant un fichier.
@@ -38,10 +39,13 @@ npm test        # lance les tests (Node 20 ou plus, aucune installation)
 npm run build   # génère dist/simulateur.html
 ```
 
+Les tests et le build tournent aussi sur GitHub Actions à chaque push sur `main` et à chaque pull request.
+
 ## Avant une mise en ligne publique
 
-- Montants INAMI vérifiés le 27/10/2026 sur le [tarif officiel du 01/01/2026](https://www.inami.fgov.be/SiteCollectionDocuments/tarif_opticiens_20260101.pdf) ; surveiller l'index de 2,72 % annoncé
-- Règle de cumul avec l'INAMI encore inconnue pour Solidaris, Mutualia et la Mutualité libérale (le simulateur affiche deux scénarios)
+- Montants INAMI vérifiés le 28/10/2026 (59 montants identiques, dernier tarif publié) sur le [tarif officiel du 01/01/2026](https://www.inami.fgov.be/SiteCollectionDocuments/tarif_opticiens_20260101.pdf) ; surveiller l'index de 2,72 % annoncé
+- Avantages des 12 mutualités revérifiés le 28/10/2026 sur leurs pages, brochures ou statuts officiels (CM via recherche web, son site refusant les robots). Règles de cumul tranchées : brochure MC 2026, statuts Mutualia 2026 (art. 47), statuts Solidaris Wallonie 2026 (art. 83), statuts Solidaris Vlaanderen ; Solidaris Brabant et Mutualité libérale déduits de leurs pages
+- Non calculé : Solidaris Wallonie plafonne à 100 € l'année des 18 ans ; VNZ accepte une prescription jusqu'à 6 mois après l'achat ; la Mutualité Neutre n'exige pas de prescription pour une monture seule
 - Questions ouvertes envoyées à l'INAMI et aux mutualités : renouvellement par œil, borne exacte des 6 mois, enfant avec un œil à 6 D ou plus, cumul quand l'INAMI ne paie qu'un verre
 - Faire relire l'interface néerlandaise par un locuteur natif
 

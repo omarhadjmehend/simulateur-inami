@@ -160,7 +160,8 @@ test('Solidaris Wallonie hors magasin partenaire : 0 €', () => {
 });
 
 test('cumul inconnu et INAMI payé : deux scénarios', () => {
-  const r = simuler(base({ mutualiteId: 'mutualia' }), inami, mutualites);
+  const inconnue = mutualites.map((m) => (m.id === 'mutualia' ? { ...m, cumul_inami: null } : m));
+  const r = simuler(base({ mutualiteId: 'mutualia' }), inami, inconnue);
   assert.equal(r.mutualite.scenarios.length, 2);
   assert.equal(r.mutualite.scenarios[0].montant, 200);
   assert.equal(r.mutualite.scenarios[1].montant, 0);
@@ -451,4 +452,32 @@ test('audit : notation en cylindre positif', () => {
 test('audit : 65+ bifocal minéral 1,60 est un indice élevé', () => {
   const r = simuler(base({ dateNaissance: '1955-01-01', typeVerre: 'bifocal', materiau: 'mineral', indice: 1.6, yeux: { od: { sph: 4.5 }, og: null } }), inami, mutualites);
   assert.equal(r.yeux.od.code, '742070');
+});
+
+test('vérification 28/10/2026 : Mutualité libérale s\'ajoute à l\'INAMI (un seul scénario)', () => {
+  const r = simuler(base({ mutualiteId: 'liberale' }), inami, mutualites);
+  assert.ok(r.inami.total > 0);
+  assert.equal(r.mutualite.scenarios.length, 1);
+  assert.equal(r.mutualite.scenarios[0].montant, 50);
+});
+
+test('vérification 28/10/2026 : Mutualia s\'ajoute à l\'INAMI, plafonnée au reste à charge (statuts art. 47)', () => {
+  const r = simuler(base({ mutualiteId: 'mutualia', prixVerres: 250 }), inami, mutualites);
+  assert.equal(r.mutualite.scenarios.length, 1);
+  assert.equal(r.inami.total, 164.44);
+  assert.equal(r.mutualite.scenarios[0].montant, 85.56);
+  assert.equal(r.mutualite.scenarios[0].reste, 0);
+});
+
+test('vérification 28/10/2026 : Solidaris Wallonie, Brabant et Vlaanderen s\'ajoutent à l\'INAMI', () => {
+  for (const id of ['solidaris-wallonie', 'solidaris-brabant', 'solidaris-vlaanderen']) {
+    const r = simuler(base({ mutualiteId: id, achatPartenaire: true }), inami, mutualites);
+    assert.equal(r.mutualite.scenarios.length, 1, id);
+    assert.ok(r.mutualite.scenarios[0].montant > 0, id);
+  }
+});
+
+test('vérification 28/10/2026 : Solidaris Vlaanderen par année civile', () => {
+  const r = simuler(base({ mutualiteId: 'solidaris-vlaanderen', dernierAvantage: '2025-12-20' }), inami, mutualites);
+  assert.equal(r.mutualite.scenarios[0].montant, 25);
 });
