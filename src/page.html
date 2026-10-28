@@ -1,0 +1,462 @@
+<title>Simulateur INAMI optique</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap">
+<style>
+/* Mise en page : fiche de comptoir en deux colonnes (saisie | résultat), une seule colonne sur téléphone */
+:root {
+  --bg: #eef3f4;
+  --surface: #ffffff;
+  --ink: #12232a;
+  --muted: #56686f;
+  --line: #cfdadd;
+  --accent: #0b6f7a;
+  --accent-soft: #dcefef;
+  --ok: #1f7a46;
+  --ok-soft: #e1f2e7;
+  --no: #a5432b;
+  --no-soft: #f7e6e1;
+  --warn: #8a6100;
+  --warn-soft: #fbf0d6;
+  --font-display: "Barlow Semi Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1a1e; --surface: #16252b; --ink: #e5eff1; --muted: #9db0b6; --line: #2a3e45;
+    --accent: #5cc3cc; --accent-soft: #173a3f; --ok: #6fd39a; --ok-soft: #173326;
+    --no: #f09a82; --no-soft: #3a211b; --warn: #e8c26a; --warn-soft: #362c14;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1a1e; --surface: #16252b; --ink: #e5eff1; --muted: #9db0b6; --line: #2a3e45;
+  --accent: #5cc3cc; --accent-soft: #173a3f; --ok: #6fd39a; --ok-soft: #173326;
+  --no: #f09a82; --no-soft: #3a211b; --warn: #e8c26a; --warn-soft: #362c14;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 40px;
+}
+.wrap { max-width: 1080px; margin: 0 auto; display: grid; gap: 20px; }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: 1.9rem; line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: 0.01em; }
+.sub { color: var(--muted); margin: 4px 0 0; max-width: 60ch; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+button { font: inherit; cursor: pointer; }
+.btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 8px; padding: 8px 14px; font-weight: 700; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.btn:focus-visible, input:focus-visible, select:focus-visible, .seg label:focus-within { outline: 3px solid var(--accent); outline-offset: 2px; }
+.layout { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 820px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+form { display: grid; gap: 14px; }
+fieldset { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); margin: 0; padding: 14px 14px 16px; display: grid; gap: 12px; min-width: 0; }
+legend { font-family: var(--font-display); font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); padding: 0 6px; }
+.row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field > span { font-size: 0.85rem; color: var(--muted); }
+input[type="date"], input[type="number"], select {
+  width: 100%; font: inherit; color: var(--ink); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 7px; padding: 8px 10px; min-height: 40px;
+  font-variant-numeric: tabular-nums;
+}
+.check { display: flex; gap: 10px; align-items: flex-start; }
+.check input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--accent); flex: none; }
+.seg { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg label { flex: 1; text-align: center; padding: 9px 6px; cursor: pointer; background: var(--bg); border-right: 1px solid var(--line); font-weight: 700; font-size: 0.92rem; }
+.seg label:last-child { border-right: 0; }
+.seg.lang label { padding: 7px 12px; flex: none; }
+.mutname { margin: 0; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg label:has(input:checked) { background: var(--accent); color: var(--surface); }
+.rx { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.rx th { font-family: var(--font-display); font-weight: 600; text-align: left; font-size: 0.85rem; color: var(--muted); padding: 0 6px 4px 0; }
+.rx td { padding: 3px 6px 3px 0; }
+.rx td:first-child { font-family: var(--font-display); font-weight: 700; width: 3.2em; }
+.hint { font-size: 0.82rem; color: var(--muted); margin: 0; }
+
+.result { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); display: grid; gap: 14px; }
+@media (max-width: 820px) { .result { position: static; } }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 12px; min-width: 0; }
+.panel h2 { font-family: var(--font-display); font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin: 0; }
+.total { display: grid; gap: 2px; }
+.total .label { color: var(--muted); font-size: 0.9rem; }
+.total .big { font-family: var(--font-display); font-weight: 700; font-size: 2.6rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.lines { display: grid; gap: 6px; margin: 0; }
+.lines div { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px dashed var(--line); padding-bottom: 6px; }
+.lines div:last-child { border-bottom: 0; padding-bottom: 0; }
+.lines dt { color: var(--muted); min-width: 0; }
+.lines dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lines .sum dt, .lines .sum dd { color: var(--ink); font-weight: 700; }
+.eyes { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.eye { border-radius: 8px; padding: 10px 12px; display: grid; gap: 4px; min-width: 0; }
+.eye.ok { background: var(--ok-soft); }
+.eye.no { background: var(--no-soft); }
+.eye .tag { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; }
+.eye.ok .tag { color: var(--ok); }
+.eye.no .tag { color: var(--no); }
+.eye p { margin: 0; font-size: 0.88rem; }
+.scen { border-left: 3px solid var(--accent); padding-left: 10px; display: grid; gap: 2px; }
+.scen strong { font-variant-numeric: tabular-nums; }
+.scen small { color: var(--muted); }
+.pill { display: inline-block; font-size: 0.75rem; font-weight: 700; border-radius: 999px; padding: 2px 8px; background: var(--accent-soft); color: var(--accent); }
+.pill.verify { background: var(--warn-soft); color: var(--warn); }
+.warn { background: var(--warn-soft); color: var(--ink); border-radius: 8px; padding: 10px 12px; font-size: 0.88rem; display: grid; gap: 6px; }
+.warn p { margin: 0; }
+ul.docs { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; font-size: 0.9rem; }
+.disclaimer { font-size: 0.8rem; color: var(--muted); margin: 0; }
+.example-flag { font-size: 0.78rem; font-weight: 700; color: var(--warn); background: var(--warn-soft); border-radius: 999px; padding: 3px 10px; }
+a { color: var(--accent); }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1 data-i18n="titre">Simulateur INAMI optique</h1>
+      <p class="sub" data-i18n="sous">Remboursement INAMI et mutualité d'une paire de lunettes, calculé au comptoir. Rien n'est enregistré.</p>
+    </div>
+    <div class="actions">
+      <div class="seg lang" role="radiogroup" aria-label="Langue / Taal"><label><input type="radio" name="lang" id="langFr" value="fr" checked>FR</label><label><input type="radio" name="lang" id="langNl" value="nl">NL</label></div>
+      <span class="example-flag" id="exampleFlag" data-i18n="exemple">Dossier d'exemple</span>
+      <button type="button" class="btn" id="btnExemple" data-i18n="btnExemple">Exemple</button>
+      <button type="button" class="btn primary" id="btnReset" data-i18n="btnReset">Nouveau client</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <form id="form" autocomplete="off">
+      <fieldset>
+        <legend data-i18n="lgClient">Client</legend>
+        <div class="row">
+          <label class="field"><span data-i18n="naissance">Date de naissance</span><input type="date" id="dateNaissance" required></label>
+          <label class="field"><span data-i18n="delivrance">Date de délivrance</span><input type="date" id="dateDelivrance" required></label>
+        </div>
+        <div class="row">
+          <label class="check"><input type="checkbox" id="bim"><span data-i18n="bim">Statut BIM (intervention majorée)</span></label>
+          <label class="check"><input type="checkbox" id="conventionne" checked><span data-i18n="conv">Opticien conventionné</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend data-i18n="lgCorrection">Correction de loin</legend>
+        <div class="seg" role="radiogroup" aria-label="Type de verre">
+          <label><input type="radio" name="typeVerre" id="tvUni" value="unifocal" checked><span data-i18n="uni">Unifocal</span></label>
+          <label><input type="radio" name="typeVerre" id="tvBi" value="bifocal"><span data-i18n="bi">Bifocal</span></label>
+          <label><input type="radio" name="typeVerre" id="tvProg" value="progressif"><span data-i18n="prog">Progressif</span></label>
+        </div>
+        <div class="row">
+          <label class="field"><span data-i18n="materiau">Matériau</span>
+            <select id="materiau"><option value="" data-i18n="nsp">Je ne sais pas</option><option value="organique" data-i18n="organique">Organique</option><option value="mineral" data-i18n="mineral">Minéral</option></select></label>
+          <label class="field"><span data-i18n="indice">Indice</span>
+            <select id="indice"><option value="" data-i18n="nsp2">Je ne sais pas</option><option value="1.5">1,50</option><option value="1.53">1,53</option><option value="1.56">1,56</option><option value="1.6">1,60</option><option value="1.67">1,67</option><option value="1.7">1,70</option><option value="1.74">1,74</option><option value="1.8">1,80</option><option value="1.9">1,90</option></select></label>
+        </div>
+        <table class="rx">
+          <thead><tr><th></th><th data-i18n="sph">Sphère</th><th data-i18n="cyl">Cylindre</th></tr></thead>
+          <tbody>
+            <tr><td>OD</td>
+              <td><input type="number" id="odSph" step="0.25" min="-30" max="30" inputmode="decimal" aria-label="Sphère œil droit"></td>
+              <td><input type="number" id="odCyl" step="0.25" min="-10" max="10" inputmode="decimal" aria-label="Cylindre œil droit"></td></tr>
+            <tr><td>OG</td>
+              <td><input type="number" id="ogSph" step="0.25" min="-30" max="30" inputmode="decimal" aria-label="Sphère œil gauche"></td>
+              <td><input type="number" id="ogCyl" step="0.25" min="-10" max="10" inputmode="decimal" aria-label="Cylindre œil gauche"></td></tr>
+          </tbody>
+        </table>
+        <p class="hint" data-i18n="hintRx">Laisse une ligne vide pour un seul verre. Bifocal et progressif : valeurs de loin.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend data-i18n="lgPrescription">Prescription et renouvellement</legend>
+        <label class="check"><input type="checkbox" id="prescriptionOphtalmo" checked><span data-i18n="presc">Prescription d'un ophtalmologue (annexe 15bis)</span></label>
+        <div class="row">
+          <label class="field"><span data-i18n="datePresc">Date de la prescription</span><input type="date" id="datePrescription"></label>
+          <label class="field"><span data-i18n="dateRecep">Prescription reçue le (si différent de la délivrance)</span><input type="date" id="dateReceptionPrescription"></label>
+          <label class="field"><span data-i18n="dernierePaire">Dernière paire remboursée (si connue)</span><input type="date" id="derniereDelivrance"></label>
+        </div>
+        <div class="row">
+          <label class="check"><input type="checkbox" id="changementOD"><span data-i18n="changementOD">OD : correction changée d'au moins 0,5 D depuis</span></label>
+          <label class="check"><input type="checkbox" id="changementOG"><span data-i18n="changementOG">OG : correction changée d'au moins 0,5 D depuis</span></label>
+        </div>
+        <p class="hint" data-i18n="hintChangement">Compte un changement de sphère, de cylindre ou de prisme, de loin ou de près. Un changement d'axe seul, ou de la vision intermédiaire seule d'un progressif, ne compte pas.</p>
+        <label class="check"><input type="checkbox" id="autreDistance"><span data-i18n="autreDistance">Unifocal pour une autre distance (loin, près, intermédiaire), mentionnée sur la prescription</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend data-i18n="lgMut">Mutualité</legend>
+        <label class="field"><span data-i18n="mutClient">Mutualité du client</span><select id="mutualiteId"></select></label>
+        <div class="row">
+          <label class="field"><span data-i18n="dernierAvantage">Dernier avantage optique reçu (si connu)</span><input type="date" id="dernierAvantage"></label>
+        </div>
+        <label class="check" id="partenaireRow" hidden><input type="checkbox" id="achatPartenaire"><span id="partenaireLabel">Achat chez le magasin partenaire</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend data-i18n="lgPrix">Prix et monture</legend>
+        <div class="row">
+          <label class="field"><span data-i18n="prixVerres">Prix des verres (€)</span><input type="number" id="prixVerres" min="0" step="1" inputmode="decimal"></label>
+          <label class="field"><span data-i18n="prixMonture">Prix de la monture (€)</span><input type="number" id="prixMonture" min="0" step="1" inputmode="decimal"></label>
+        </div>
+        <div class="row">
+          <label class="check"><input type="checkbox" id="avecMonture" checked><span data-i18n="nouvelleMonture">Nouvelle monture</span></label>
+          <label class="field"><span data-i18n="montures">Montures déjà remboursées (moins de 18 ans)</span>
+            <select id="montureInterventions"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></label>
+        </div>
+      </fieldset>
+    </form>
+
+    <aside class="result" aria-live="polite">
+      <section class="panel">
+        <h2 data-i18n="hReste">Reste à payer</h2>
+        <div id="totaux"></div>
+      </section>
+      <section class="panel">
+        <h2 data-i18n="hVerres">Verres</h2>
+        <div class="eyes" id="yeux"></div>
+      </section>
+      <section class="panel">
+        <h2 data-i18n="hDetail">Détail du remboursement</h2>
+        <dl class="lines" id="detail"></dl>
+        <div id="mutualite"></div>
+      </section>
+      <div class="warn" id="avertissements" hidden></div>
+      <section class="panel">
+        <h2 data-i18n="hDocs">Documents à remettre</h2>
+        <ul class="docs" id="documents"></ul>
+        <p class="disclaimer" id="disclaimer"></p>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<script>
+const INAMI = /*INAMI_JSON*/;
+const MUTUALITES = /*MUTUALITES_JSON*/.mutualites;
+/*CALCUL_JS*/
+
+const UI = {
+  fr: {
+    titre: 'Simulateur INAMI optique',
+    sous: "Remboursement INAMI et mutualité d'une paire de lunettes, calculé au comptoir. Rien n'est enregistré.",
+    exemple: "Dossier d'exemple", btnExemple: 'Exemple', btnReset: 'Nouveau client',
+    lgClient: 'Client', naissance: 'Date de naissance', delivrance: 'Date de délivrance',
+    bim: 'Statut BIM (intervention majorée)', conv: 'Opticien conventionné',
+    lgCorrection: 'Correction de loin', uni: 'Unifocal', bi: 'Bifocal', prog: 'Progressif', sph: 'Sphère', cyl: 'Cylindre',
+    hintRx: 'Laisse une ligne vide pour un seul verre. Bifocal et progressif : valeurs de loin.',
+    materiau: 'Matériau', indice: 'Indice', nsp: 'Je ne sais pas', nsp2: 'Je ne sais pas', organique: 'Organique', mineral: 'Minéral', codeInami: 'code',
+    lgPrescription: 'Prescription et renouvellement', presc: "Prescription d'un ophtalmologue (annexe 15bis)",
+    datePresc: 'Date de la prescription', dernierePaire: 'Dernière paire remboursée (si connue)',
+    dateRecep: 'Prescription reçue le (si différent de la délivrance)',
+    changementOD: "OD : correction changée d'au moins 0,5 D depuis", changementOG: "OG : correction changée d'au moins 0,5 D depuis",
+    hintChangement: "Compte un changement de sphère, de cylindre ou de prisme, de loin ou de près. Un changement d'axe seul, ou de la vision intermédiaire seule d'un progressif, ne compte pas.",
+    autreDistance: 'Unifocal pour une autre distance (loin, près, intermédiaire), mentionnée sur la prescription',
+    lgMut: 'Mutualité', mutClient: 'Mutualité du client', dernierAvantage: 'Dernier avantage optique reçu (si connu)',
+    lgPrix: 'Prix et monture', prixVerres: 'Prix des verres (€)', prixMonture: 'Prix de la monture (€)',
+    nouvelleMonture: 'Nouvelle monture', montures: 'Montures déjà remboursées (moins de 18 ans)',
+    hReste: 'Reste à payer', hVerres: 'Verres', hDetail: 'Détail du remboursement', hDocs: 'Documents à remettre',
+    jeNeSaisPas: 'Je ne sais pas', achatChez: (p) => `Achat chez ${p}`,
+    attenteDates: 'Entre la date de naissance et la date de délivrance pour lancer le calcul.',
+    attenteRx: 'Entre au moins une correction (sphère ou cylindre).',
+    clientPaie: 'Le client paie', sur: (p, r) => `sur ${p} · remboursé ${r}`,
+    totalRembourse: 'Total remboursé', entrePrix: 'Entre le prix pour voir le reste à payer.',
+    rembourse: (m) => `Remboursé ${m}`, pasIntervention: "Pas d'intervention", suppInclus: ' · supplément cylindre inclus',
+    meridien: 'Méridien le plus fort', categorie: 'catégorie',
+    lVerres: 'Verres (INAMI)', lSupp: 'Supplément cylindre > 6 D', lMonture: 'Monture enfant', lReduction: 'Réduction non conventionné', lTotal: 'Total INAMI',
+    avantageMut: 'Avantage mutualité', source: "Source de l'avantage",
+    datePrescManquante: "Date de prescription non renseignée : vérifie qu'elle a moins de 6 mois.",
+    aucunDoc: 'Aucun document de remboursement nécessaire',
+    disclaimer: (v) => `Estimation indicative, non contractuelle. Le remboursement final est décidé par la mutualité. Outil indépendant, non affilié à l'INAMI, à une mutualité ou à une enseigne. Tarifs : fichier INAMI du 01/01/2026${v ? ', vérifiés le ' + v : ' (vérification officielle en cours)'}.`,
+    locale: 'fr-BE',
+  },
+  nl: {
+    titre: 'RIZIV-simulator optiek',
+    sous: 'Terugbetaling door het RIZIV en het ziekenfonds voor een bril, berekend aan de toonbank. Er wordt niets bewaard.',
+    exemple: 'Voorbeelddossier', btnExemple: 'Voorbeeld', btnReset: 'Nieuwe klant',
+    lgClient: 'Klant', naissance: 'Geboortedatum', delivrance: 'Datum van aflevering',
+    bim: 'Verhoogde tegemoetkoming (VT)', conv: 'Opticien met conventie',
+    lgCorrection: 'Correctie veraf', uni: 'Enkelvoudig', bi: 'Bifocaal', prog: 'Multifocaal', sph: 'Sfeer', cyl: 'Cilinder',
+    hintRx: 'Laat een regel leeg voor één glas. Bifocaal en multifocaal: waarden voor veraf.',
+    materiau: 'Materiaal', indice: 'Index', nsp: 'Weet ik niet', nsp2: 'Weet ik niet', organique: 'Organisch', mineral: 'Mineraal', codeInami: 'code',
+    lgPrescription: 'Voorschrift en hernieuwing', presc: 'Voorschrift van een oogarts (bijlage 15bis)',
+    datePresc: 'Datum van het voorschrift', dernierePaire: 'Laatste terugbetaalde bril (indien gekend)',
+    dateRecep: 'Voorschrift ontvangen op (indien anders dan de aflevering)',
+    changementOD: 'OD: correctie sindsdien minstens 0,5 D gewijzigd', changementOG: 'OG: correctie sindsdien minstens 0,5 D gewijzigd',
+    hintChangement: 'Telt mee: een wijziging van sfeer, cilinder of prisma, veraf of dichtbij. Alleen een asverandering, of alleen de tussenafstand van een multifocaal glas, telt niet.',
+    autreDistance: 'Enkelvoudig glas voor een andere afstand (veraf, dichtbij, tussenafstand), vermeld op het voorschrift',
+    lgMut: 'Ziekenfonds', mutClient: 'Ziekenfonds van de klant', dernierAvantage: 'Laatste optiekvoordeel ontvangen (indien gekend)',
+    lgPrix: 'Prijs en montuur', prixVerres: 'Prijs van de glazen (€)', prixMonture: 'Prijs van het montuur (€)',
+    nouvelleMonture: 'Nieuw montuur', montures: 'Al terugbetaalde monturen (jonger dan 18)',
+    hReste: 'Te betalen', hVerres: 'Glazen', hDetail: 'Detail van de terugbetaling', hDocs: 'Mee te geven documenten',
+    jeNeSaisPas: 'Weet ik niet', achatChez: (p) => `Aankoop bij ${p}`,
+    attenteDates: 'Vul de geboortedatum en de datum van aflevering in om te berekenen.',
+    attenteRx: 'Vul minstens één correctie in (sfeer of cilinder).',
+    clientPaie: 'De klant betaalt', sur: (p, r) => `op ${p} · terugbetaald ${r}`,
+    totalRembourse: 'Totaal terugbetaald', entrePrix: 'Vul de prijs in om te zien wat de klant betaalt.',
+    rembourse: (m) => `Terugbetaald ${m}`, pasIntervention: 'Geen tegemoetkoming', suppInclus: ' · supplement cilinder inbegrepen',
+    meridien: 'Sterkste meridiaan', categorie: 'categorie',
+    lVerres: 'Glazen (RIZIV)', lSupp: 'Supplement cilinder > 6 D', lMonture: 'Montuur kind', lReduction: 'Vermindering zonder conventie', lTotal: 'Totaal RIZIV',
+    avantageMut: 'Voordeel ziekenfonds', source: 'Bron van het voordeel',
+    datePrescManquante: 'Datum van het voorschrift niet ingevuld: controleer of het minder dan 6 maanden oud is.',
+    aucunDoc: 'Geen documenten nodig voor terugbetaling',
+    disclaimer: (v) => `Indicatieve, niet-bindende schatting. Het ziekenfonds beslist over de uiteindelijke terugbetaling. Onafhankelijke tool, niet verbonden aan het RIZIV, een ziekenfonds of een keten. Tarieven: RIZIV-bestand van 01/01/2026${v ? ', nagekeken op ' + v : ' (officiële controle lopende)'}.`,
+    locale: 'nl-BE',
+  },
+};
+
+const $ = (id) => document.getElementById(id);
+let lang = 'fr';
+try { const l = localStorage.getItem('lang'); if (l === 'nl' || l === 'fr') lang = l; } catch (e) {}
+const U = () => UI[lang];
+const euro = (n) => n.toLocaleString(U().locale, { style: 'currency', currency: 'EUR' });
+const iso = (d) => d.toISOString().slice(0, 10);
+const today = new Date();
+const ilYa = (mois) => { const d = new Date(today); d.setMonth(d.getMonth() - mois); return iso(d); };
+const sel = $('mutualiteId');
+
+function appliquerLangue() {
+  document.documentElement.lang = lang;
+  document.title = U().titre;
+  document.querySelectorAll('[data-i18n]').forEach((el) => { const t = U()[el.dataset.i18n]; if (typeof t === 'string') el.textContent = t; });
+  const v = sel.value;
+  sel.innerHTML = `<option value="">${U().jeNeSaisPas}</option>` + MUTUALITES.map((m) => `<option value="${m.id}">${m.nom}</option>`).join('');
+  sel.value = v;
+  $(lang === 'nl' ? 'langNl' : 'langFr').checked = true;
+  majPartenaire();
+  calculer();
+}
+
+const EXEMPLE = {
+  dateNaissance: '1979-04-12', dateDelivrance: iso(today), typeVerre: 'progressif',
+  materiau: 'organique', indice: '1.6',
+  odSph: '-5.00', odCyl: '-1.25', ogSph: '-4.50', ogCyl: '-0.75',
+  prescriptionOphtalmo: true, datePrescription: ilYa(1), dateReceptionPrescription: '', derniereDelivrance: '', changementOD: false, changementOG: false, autreDistance: false,
+  conventionne: true, bim: false, mutualiteId: 'mc', dernierAvantage: '', achatPartenaire: false,
+  prixVerres: '520', prixMonture: '140', avecMonture: true, montureInterventions: '0',
+};
+const VIDE = {
+  dateNaissance: '', dateDelivrance: iso(today), typeVerre: 'unifocal',
+  materiau: '', indice: '',
+  odSph: '', odCyl: '', ogSph: '', ogCyl: '',
+  prescriptionOphtalmo: true, datePrescription: '', dateReceptionPrescription: '', derniereDelivrance: '', changementOD: false, changementOG: false, autreDistance: false,
+  conventionne: true, bim: false, mutualiteId: '', dernierAvantage: '', achatPartenaire: false,
+  prixVerres: '', prixMonture: '', avecMonture: true, montureInterventions: '0',
+};
+
+function remplir(v) {
+  for (const [k, val] of Object.entries(v)) {
+    if (k === 'typeVerre') { document.querySelector(`input[name="typeVerre"][value="${val}"]`).checked = true; continue; }
+    const el = $(k);
+    if (el.type === 'checkbox') el.checked = val; else el.value = val;
+  }
+  majPartenaire();
+  calculer();
+}
+
+function lire() {
+  const num = (id) => { const v = $(id).value; return v === '' ? null : Number(v); };
+  const oeil = (s, c) => (num(s) === null && num(c) === null ? null : { sph: num(s) || 0, cyl: num(c) || 0 });
+  return {
+    dateNaissance: $('dateNaissance').value,
+    dateDelivrance: $('dateDelivrance').value,
+    typeVerre: document.querySelector('input[name="typeVerre"]:checked').value,
+    materiau: $('materiau').value || null,
+    indice: $('indice').value === '' ? null : Number($('indice').value),
+    yeux: { od: oeil('odSph', 'odCyl'), og: oeil('ogSph', 'ogCyl') },
+    prescriptionOphtalmo: $('prescriptionOphtalmo').checked,
+    datePrescription: $('datePrescription').value || null,
+    derniereDelivrance: $('derniereDelivrance').value || null,
+    dateReceptionPrescription: $('dateReceptionPrescription').value || null,
+    changement05: { od: $('changementOD').checked, og: $('changementOG').checked },
+    autreDistance: $('autreDistance').checked,
+    conventionne: $('conventionne').checked,
+    bim: $('bim').checked,
+    avecMonture: $('avecMonture').checked,
+    montureInterventions: Number($('montureInterventions').value),
+    mutualiteId: $('mutualiteId').value || null,
+    dernierAvantage: $('dernierAvantage').value || null,
+    achatPartenaire: $('achatPartenaire').checked,
+    prixVerres: num('prixVerres') || 0,
+    prixMonture: num('prixMonture') || 0,
+  };
+}
+
+function majPartenaire() {
+  const m = MUTUALITES.find((x) => x.id === sel.value);
+  $('partenaireRow').hidden = !(m && m.partenaire_requis);
+  if (m && m.partenaire_requis) $('partenaireLabel').textContent = U().achatChez(m.partenaire_requis);
+}
+
+function vide(msg) {
+  $('totaux').innerHTML = `<p class="hint">${msg}</p>`;
+  for (const id of ['yeux', 'detail', 'mutualite', 'documents']) $(id).innerHTML = '';
+  $('avertissements').hidden = true;
+}
+
+function calculer() {
+  const t = U();
+  const e = lire();
+  $('disclaimer').textContent = t.disclaimer(INAMI.verified_on);
+  if (!e.dateNaissance || !e.dateDelivrance) return vide(t.attenteDates);
+  if (!e.yeux.od && !e.yeux.og) return vide(t.attenteRx);
+
+  const r = simuler(e, INAMI, MUTUALITES, lang);
+  const sc = r.mutualite.scenarios;
+
+  if (r.prix) {
+    $('totaux').innerHTML = sc.map((s) => `<div class="total">
+        <span class="label">${sc.length > 1 ? s.label : t.clientPaie}</span>
+        <span class="big">${euro(s.reste)}</span>
+        <span class="label">${t.sur(euro(r.prix), euro(s.totalRembourse))}</span></div>`).join('');
+  } else {
+    $('totaux').innerHTML = sc.map((s) => `<div class="total">
+        <span class="label">${sc.length > 1 ? s.label + ' · ' + t.totalRembourse.toLowerCase() : t.totalRembourse}</span>
+        <span class="big">${euro(s.totalRembourse)}</span></div>`).join('') + `<p class="hint">${t.entrePrix}</p>`;
+  }
+
+  $('yeux').innerHTML = Object.entries(r.yeux).map(([cote, y]) => `
+    <div class="eye ${y.eligible ? 'ok' : 'no'}">
+      <span class="tag">${cote.toUpperCase()} · ${y.eligible ? t.rembourse(euro(y.net)) : t.pasIntervention}</span>
+      <p>${y.raison}${y.supplement ? t.suppInclus : ''}</p>
+      <p class="hint">${t.meridien} : ${fmtD(y.A)}${y.categorie ? ' · ' + t.categorie + ' ' + y.categorie + '°' : ''}${y.code ? ' · ' + t.codeInami + ' ' + y.code : ''}${y.codeSupplement ? ' + ' + y.codeSupplement : ''}</p>
+    </div>`).join('');
+
+  const l = [
+    [t.lVerres, r.inami.verres],
+    r.inami.supplements ? [t.lSupp, r.inami.supplements] : null,
+    r.inami.monture ? [t.lMonture, r.inami.monture] : null,
+    r.inami.reduction ? [t.lReduction, -r.inami.reduction] : null,
+  ].filter(Boolean);
+  $('detail').innerHTML = l.map(([k, v]) => `<div><dt>${k}</dt><dd>${euro(v)}</dd></div>`).join('') +
+    `<div class="sum"><dt>${t.lTotal}</dt><dd>${euro(r.inami.total)}</dd></div>`;
+
+  const f = r.mutualite.fiabilite;
+  const pill = f ? `<span class="pill ${/^(officiel|fiable)/.test(f) && !/non daté/.test(f) ? '' : 'verify'}">${f}</span>` : '';
+  $('mutualite').innerHTML = (r.mutualite.nom ? `<p class="mutname">${r.mutualite.nom} ${pill}</p>` : '') +
+    sc.map((s) => `<div class="scen"><strong>${sc.length > 1 ? s.label : t.avantageMut} : ${euro(s.montant)}</strong><small>${s.raison}</small></div>`).join('') +
+    (r.mutualite.source ? `<p class="hint"><a href="${r.mutualite.source}" target="_blank" rel="noopener">${t.source}</a></p>` : '');
+
+  const av = [...r.avertissements];
+  if (!e.datePrescription && e.prescriptionOphtalmo) av.unshift(t.datePrescManquante);
+  $('avertissements').hidden = av.length === 0;
+  $('avertissements').innerHTML = av.map((a) => `<p>${a}</p>`).join('');
+
+  $('documents').innerHTML = (r.documents.length ? r.documents : [t.aucunDoc]).map((d) => `<li>${d}</li>`).join('');
+}
+
+let exemple = true;
+$('form').addEventListener('input', () => { if (exemple) { exemple = false; $('exampleFlag').hidden = true; } majPartenaire(); calculer(); });
+$('form').addEventListener('submit', (ev) => ev.preventDefault());
+document.querySelectorAll('input[name="lang"]').forEach((el) => el.addEventListener('change', () => {
+  lang = el.value;
+  try { localStorage.setItem('lang', lang); } catch (e) {}
+  appliquerLangue();
+}));
+$('btnReset').addEventListener('click', () => { exemple = false; $('exampleFlag').hidden = true; remplir(VIDE); });
+$('btnExemple').addEventListener('click', () => { remplir(EXEMPLE); exemple = true; $('exampleFlag').hidden = false; });
+appliquerLangue();
+remplir(EXEMPLE);
+</script>
+
