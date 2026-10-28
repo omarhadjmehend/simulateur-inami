@@ -7,7 +7,7 @@ Simulateur du remboursement d'une paire de lunettes en Belgique (INAMI + mutuali
 ## Commandes
 
 ```
-npm test                                                     # 79 tests, node:test, Node 20+, aucune dépendance
+npm test                                                     # node:test, Node 20+, aucune dépendance
 node --test --test-name-pattern="Helan" tests/calcul.test.js # un seul test (ou un groupe) par nom
 npm run build                                                # dist/simulateur.html et dist/index.html
 ```
