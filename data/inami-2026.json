@@ -1,7 +1,7 @@
 {
   "version": "2026-01-01",
   "source": "https://www.inami.fgov.be/SiteCollectionDocuments/tarif_opticiens_20260101.pdf",
-  "verified_on": "2026-10-27",
+  "verified_on": "2026-10-28",
   "note": "Tarifs opticiens non indexés au 01/01/2026 (décision du 06/11/2025) : montants identiques à 2025, recalculés en points Z × coefficient. honoraire = remboursement chez un opticien conventionné ou pour un patient BIM ; reduit = colonne à 75 % (opticien non conventionné, patient non BIM). Hors simulateur : verres lenticulaires, filtres médicaux, prismes.",
   "seuils": {
     "tous_ages": 6.0,

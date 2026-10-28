@@ -43,7 +43,7 @@ Les tests et le build tournent aussi sur GitHub Actions à chaque push sur `main
 
 ## Avant une mise en ligne publique
 
-- Montants INAMI vérifiés le 27/10/2026 sur le [tarif officiel du 01/01/2026](https://www.inami.fgov.be/SiteCollectionDocuments/tarif_opticiens_20260101.pdf) ; surveiller l'index de 2,72 % annoncé
+- Montants INAMI vérifiés le 28/10/2026 (59 montants identiques, dernier tarif publié) sur le [tarif officiel du 01/01/2026](https://www.inami.fgov.be/SiteCollectionDocuments/tarif_opticiens_20260101.pdf) ; surveiller l'index de 2,72 % annoncé
 - Règle de cumul avec l'INAMI encore inconnue pour Solidaris, Mutualia et la Mutualité libérale (le simulateur affiche deux scénarios)
 - Questions ouvertes envoyées à l'INAMI et aux mutualités : renouvellement par œil, borne exacte des 6 mois, enfant avec un œil à 6 D ou plus, cumul quand l'INAMI ne paie qu'un verre
 - Faire relire l'interface néerlandaise par un locuteur natif
