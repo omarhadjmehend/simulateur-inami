@@ -481,3 +481,22 @@ test('vérification 28/10/2026 : Solidaris Vlaanderen par année civile', () => 
   const r = simuler(base({ mutualiteId: 'solidaris-vlaanderen', dernierAvantage: '2025-12-20' }), inami, mutualites);
   assert.equal(r.mutualite.scenarios[0].montant, 25);
 });
+
+test('article 30 A.2° 4.2 : enfant, un seul œil changé de 0,5 D dans les 2 ans : les deux verres sont remboursés', () => {
+  const r = simuler(base({ dateNaissance: '2014-05-01', derniereDelivrance: '2025-06-01', changement05: { od: true, og: false }, avecMonture: false,
+    yeux: { od: { sph: -2.5 }, og: { sph: -2 } } }), inami, mutualites);
+  assert.equal(r.yeux.od.eligible, true);
+  assert.equal(r.yeux.og.eligible, true);
+  assert.ok(!r.avertissements.some((a) => a.includes('œil par œil')));
+});
+
+test('article 30 A.2° 4.2 : enfant sans aucun changement dans les 2 ans : rien', () => {
+  const r = simuler(base({ dateNaissance: '2014-05-01', derniereDelivrance: '2025-06-01', changement05: false, avecMonture: false,
+    yeux: { od: { sph: -2.5 }, og: { sph: -2 } } }), inami, mutualites);
+  assert.equal(r.inami.total, 0);
+});
+
+test('article 30 A.2.2 : verre unifocal de près, puissance du verre délivré (+4,50 add +2,00 = +6,50) : remboursé', () => {
+  const r = simuler(base({ yeux: { od: { sph: 6.5 }, og: { sph: 6.5 } } }), inami, mutualites);
+  assert.equal(r.yeux.od.categorie, 1);
+});

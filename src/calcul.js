@@ -263,6 +263,9 @@ export function simuler(entree, inami, mutualites, lang = 'fr') {
   const changement = typeof entree.changement05 === 'object' && entree.changement05 !== null
     ? { od: !!entree.changement05.od, og: !!entree.changement05.og }
     : { od: !!entree.changement05, og: !!entree.changement05 };
+  // Avant 18 ans, les deux verres gardent les mêmes caractéristiques : si un œil a changé d'au moins 0,5 D,
+  // le renouvellement vaut pour les deux yeux (article 30, A. 2° groupe cible, point 4.2)
+  if (enfant && (changement.od || changement.og)) changement.od = changement.og = true;
   let renouvellementBloque = null;
   if (entree.derniereDelivrance) {
     const delai = enfant ? inami.renouvellement.mois_enfant : inami.renouvellement.mois_adulte;

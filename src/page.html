@@ -169,7 +169,7 @@ a { color: var(--accent); }
       </fieldset>
 
       <fieldset>
-        <legend data-i18n="lgCorrection">Correction de loin</legend>
+        <legend data-i18n="lgCorrection">Correction</legend>
         <div class="seg" role="radiogroup" aria-label="Type de verre">
           <label><input type="radio" name="typeVerre" id="tvUni" value="unifocal" checked><span data-i18n="uni">Unifocal</span></label>
           <label><input type="radio" name="typeVerre" id="tvBi" value="bifocal"><span data-i18n="bi">Bifocal</span></label>
@@ -192,7 +192,7 @@ a { color: var(--accent); }
               <td><input type="number" id="ogCyl" step="0.25" min="-10" max="10" inputmode="decimal" aria-label="Cylindre œil gauche"></td></tr>
           </tbody>
         </table>
-        <p class="hint" data-i18n="hintRx">Laisse une ligne vide pour un seul verre. Bifocal et progressif : valeurs de loin.</p>
+        <p class="hint" data-i18n="hintRx">Unifocal : puissance du verre délivré (de loin, de près ou intermédiaire). Bifocal et progressif : valeurs de loin. Laisse une ligne vide pour un seul verre.</p>
       </fieldset>
 
       <fieldset>
@@ -279,8 +279,8 @@ const UI = {
     hRecap: 'Récapitulatif', rDelivrance: 'Délivrance', rAge: 'Âge', ans: (n) => `${n} ans`, rVerre: 'Verres', rMut: 'Mutualité',
     lgClient: 'Client', naissance: 'Date de naissance', delivrance: 'Date de délivrance',
     bim: 'Statut BIM (intervention majorée)', conv: 'Opticien conventionné',
-    lgCorrection: 'Correction de loin', uni: 'Unifocal', bi: 'Bifocal', prog: 'Progressif', sph: 'Sphère', cyl: 'Cylindre',
-    hintRx: 'Laisse une ligne vide pour un seul verre. Bifocal et progressif : valeurs de loin.',
+    lgCorrection: 'Correction', uni: 'Unifocal', bi: 'Bifocal', prog: 'Progressif', sph: 'Sphère', cyl: 'Cylindre',
+    hintRx: 'Unifocal : puissance du verre délivré (de loin, de près ou intermédiaire). Bifocal et progressif : valeurs de loin. Laisse une ligne vide pour un seul verre.',
     materiau: 'Matériau', indice: 'Indice', nsp: 'Je ne sais pas', nsp2: 'Je ne sais pas', organique: 'Organique', mineral: 'Minéral', codeInami: 'code',
     lgPrescription: 'Prescription et renouvellement', presc: "Prescription d'un ophtalmologue (annexe 15bis)",
     datePresc: 'Date de la prescription', dernierePaire: 'Dernière paire remboursée (si connue)',
@@ -313,8 +313,8 @@ const UI = {
     hRecap: 'Overzicht', rDelivrance: 'Aflevering', rAge: 'Leeftijd', ans: (n) => `${n} jaar`, rVerre: 'Glazen', rMut: 'Ziekenfonds',
     lgClient: 'Klant', naissance: 'Geboortedatum', delivrance: 'Datum van aflevering',
     bim: 'Verhoogde tegemoetkoming (VT)', conv: 'Opticien met conventie',
-    lgCorrection: 'Correctie veraf', uni: 'Enkelvoudig', bi: 'Bifocaal', prog: 'Multifocaal', sph: 'Sfeer', cyl: 'Cilinder',
-    hintRx: 'Laat een regel leeg voor één glas. Bifocaal en multifocaal: waarden voor veraf.',
+    lgCorrection: 'Correctie', uni: 'Enkelvoudig', bi: 'Bifocaal', prog: 'Multifocaal', sph: 'Sfeer', cyl: 'Cilinder',
+    hintRx: 'Enkelvoudig: sterkte van het afgeleverde glas (veraf, dichtbij of tussenafstand). Bifocaal en multifocaal: waarden voor veraf. Laat een regel leeg voor één glas.',
     materiau: 'Materiaal', indice: 'Index', nsp: 'Weet ik niet', nsp2: 'Weet ik niet', organique: 'Organisch', mineral: 'Mineraal', codeInami: 'code',
     lgPrescription: 'Voorschrift en hernieuwing', presc: 'Voorschrift van een oogarts (bijlage 15bis)',
     datePresc: 'Datum van het voorschrift', dernierePaire: 'Laatste terugbetaalde bril (indien gekend)',

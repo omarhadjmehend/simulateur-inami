@@ -29,7 +29,7 @@ Hors v1 : lentilles de contact, verres lenticulaires, filtres médicaux, prismes
 - `data/mutualites.json` : avantages des mutualités, avec source, date de vérification et fiabilité
 - `src/calcul.js` : la logique de calcul, une fonction pure sans dépendance
 - `src/page.html` : l'interface
-- `tests/calcul.test.js` : 79 tests sur les cas limites de l'article 30 et des mutualités, dont un par point relevé lors d'un audit indépendant
+- `tests/calcul.test.js` : 82 tests sur les cas limites de l'article 30 et des mutualités, dont un par point relevé lors d'un audit indépendant
 - `fonts/` : polices (licence SIL OFL 1.1), intégrées à la page au build
 - `build.js` : assemble une page HTML autonome dans `dist/` (`simulateur.html` et `index.html`)
 
@@ -55,7 +55,8 @@ Les tests et le build tournent aussi sur GitHub Actions à chaque push sur `main
 - Montants INAMI vérifiés le 28/10/2026 (59 montants identiques, dernier tarif publié) sur le [tarif officiel du 01/01/2026](https://www.inami.fgov.be/SiteCollectionDocuments/tarif_opticiens_20260101.pdf) ; surveiller l'index de 2,72 % annoncé
 - Avantages des 12 mutualités revérifiés le 28/10/2026 sur leurs pages, brochures ou statuts officiels (CM via recherche web, son site refusant les robots). Règles de cumul tranchées : brochure MC 2026, statuts Mutualia 2026 (art. 47), statuts Solidaris Wallonie 2026 (art. 83), statuts Solidaris Vlaanderen ; Solidaris Brabant et Mutualité libérale déduits de leurs pages
 - Non calculé : Solidaris Wallonie plafonne à 100 € l'année des 18 ans ; VNZ accepte une prescription jusqu'à 6 mois après l'achat ; la Mutualité Neutre n'exige pas de prescription pour une monture seule
-- Questions ouvertes envoyées à l'INAMI et aux mutualités : renouvellement par œil, borne exacte des 6 mois, enfant avec un œil à 6 D ou plus, cumul quand l'INAMI ne paie qu'un verre
+- Article 30 relu le 28/10/2026 dans sa [coordination officieuse en vigueur depuis le 01/05/2024](https://www.inami.fgov.be/SiteCollectionDocuments/nomenclatureart30_20240501_01.pdf) : seuils, délais, indices et règles enfants confirmés. Avant 18 ans, un changement de 0,5 D sur un œil renouvelle les deux verres (point A.2° 4.2) ; après 18 ans, le simulateur renouvelle seulement l'œil qui a changé (déduit du texte, qui ne prévoit l'exception que pour les enfants)
+- Questions encore ouvertes pour l'INAMI (meddev@riziv-inami.fgov.be) : borne exacte des 6 mois, enfant avec un œil à 6 D ou plus, cumul quand l'INAMI ne paie qu'un verre
 - Faire relire l'interface néerlandaise par un locuteur natif
 
 ## Avertissement
