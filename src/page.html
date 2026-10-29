@@ -121,6 +121,16 @@ details.avance > summary { cursor: pointer; padding: 12px 14px; font-weight: 700
 details.avance > summary .compte { font-weight: 400; color: var(--muted); }
 details.avance[open] > summary { border-bottom: 1px dashed var(--line); }
 details.avance .contenu { display: grid; gap: 14px; padding: 14px; }
+/* Bouton « ? » : affiche l'explication d'un cas particulier */
+.tete { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.tete > label:not(.check) { font-size: 0.85rem; color: var(--muted); }
+.item { display: grid; gap: 4px; min-width: 0; }
+.aide-btn { flex: none; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--accent); background: transparent; color: var(--accent); font-size: 0.8rem; font-weight: 700; line-height: 1; padding: 0; }
+.aide-btn[aria-expanded="true"] { background: var(--accent); color: var(--surface); }
+.hint.aide { background: var(--accent-soft); color: var(--ink); border-radius: 6px; padding: 6px 8px; }
+/* Une colonne sur téléphone ; une explication ouverte n'étire pas le champ voisin */
+details.avance .row { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); align-items: start; }
+details.avance .field { align-content: start; }
 .sous-titre { margin: 4px 0 0; font-family: var(--font-display); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
 .mini { display: grid; gap: 2px; margin: 8px 0 0; font-size: 0.92rem; }
 .mini div { display: flex; justify-content: space-between; gap: 12px; }
@@ -229,27 +239,57 @@ a { color: var(--accent); }
       <details class="avance" id="avance">
         <summary><span data-i18n="casParticuliers">Cas particuliers</span> <span class="compte" id="avanceCompte"></span></summary>
         <div class="contenu">
-          <p class="hint" data-i18n="hintAvance">À remplir seulement si ça s'applique : renouvellement, date de délivrance différente, opticien non conventionné…</p>
-          <p class="sous-titre" data-i18n="stRenouvellement">Renouvellement</p>
+          <p class="hint" data-i18n="hintAvance"></p>
+          <p class="sous-titre" data-i18n="stRenouvellement"></p>
           <div class="row">
-            <label class="field"><span data-i18n="dernierePaire">Dernière paire remboursée (si connue)</span><input type="date" id="derniereDelivrance"></label>
-            <label class="field"><span data-i18n="dernierAvantage">Dernier avantage mutualité (si connu)</span><input type="date" id="dernierAvantage"></label>
+            <div class="field">
+              <div class="tete"><label for="derniereDelivrance" data-i18n="dernierePaire"></label><button type="button" class="aide-btn" aria-controls="aDernierePaire" aria-expanded="false" aria-label="?">?</button></div>
+              <input type="date" id="derniereDelivrance">
+              <p class="hint aide" id="aDernierePaire" data-i18n="aDernierePaire" hidden></p>
+            </div>
+            <div class="field">
+              <div class="tete"><label for="dernierAvantage" data-i18n="dernierAvantage"></label><button type="button" class="aide-btn" aria-controls="aDernierAvantage" aria-expanded="false" aria-label="?">?</button></div>
+              <input type="date" id="dernierAvantage">
+              <p class="hint aide" id="aDernierAvantage" data-i18n="aDernierAvantage" hidden></p>
+            </div>
           </div>
           <div class="row">
-            <label class="check"><input type="checkbox" id="changementOD"><span data-i18n="changementOD">OD : correction changée d'au moins 0,5 D depuis</span></label>
-            <label class="check"><input type="checkbox" id="changementOG"><span data-i18n="changementOG">OG : correction changée d'au moins 0,5 D depuis</span></label>
+            <div class="item">
+              <div class="tete"><label class="check"><input type="checkbox" id="changementOD"><span data-i18n="changementOD"></span></label><button type="button" class="aide-btn" aria-controls="aChangementOD" aria-expanded="false" aria-label="?">?</button></div>
+              <p class="hint aide" id="aChangementOD" data-i18n="aChangementOD" hidden></p>
+            </div>
+            <div class="item">
+              <div class="tete"><label class="check"><input type="checkbox" id="changementOG"><span data-i18n="changementOG"></span></label><button type="button" class="aide-btn" aria-controls="aChangementOG" aria-expanded="false" aria-label="?">?</button></div>
+              <p class="hint aide" id="aChangementOG" data-i18n="aChangementOG" hidden></p>
+            </div>
           </div>
-          <p class="hint" data-i18n="hintChangement">Compte un changement de sphère, de cylindre ou de prisme, de loin ou de près. Un changement d'axe seul, ou de la vision intermédiaire seule d'un progressif, ne compte pas.</p>
-          <label class="check"><input type="checkbox" id="autreDistance"><span data-i18n="autreDistance">Unifocal pour une autre distance (loin, près, intermédiaire), mentionnée sur la prescription</span></label>
-          <p class="sous-titre" data-i18n="stDates">Dates et magasin</p>
+            <div class="item">
+              <div class="tete"><label class="check"><input type="checkbox" id="autreDistance"><span data-i18n="autreDistance"></span></label><button type="button" class="aide-btn" aria-controls="aAutreDistance" aria-expanded="false" aria-label="?">?</button></div>
+              <p class="hint aide" id="aAutreDistance" data-i18n="aAutreDistance" hidden></p>
+            </div>
+          <p class="sous-titre" data-i18n="stDates"></p>
           <div class="row">
-            <label class="field"><span data-i18n="delivrance">Date de délivrance</span><input type="date" id="dateDelivrance" required></label>
-            <label class="field"><span data-i18n="dateRecep">Prescription reçue le (si différent de la délivrance)</span><input type="date" id="dateReceptionPrescription"></label>
+            <div class="field">
+              <div class="tete"><label for="dateDelivrance" data-i18n="delivrance"></label><button type="button" class="aide-btn" aria-controls="aDelivrance" aria-expanded="false" aria-label="?">?</button></div>
+              <input type="date" id="dateDelivrance" required>
+              <p class="hint aide" id="aDelivrance" data-i18n="aDelivrance" hidden></p>
+            </div>
+            <div class="field">
+              <div class="tete"><label for="dateReceptionPrescription" data-i18n="dateRecep"></label><button type="button" class="aide-btn" aria-controls="aCommande" aria-expanded="false" aria-label="?">?</button></div>
+              <input type="date" id="dateReceptionPrescription">
+              <p class="hint aide" id="aCommande" data-i18n="aCommande" hidden></p>
+            </div>
           </div>
           <div class="row">
-            <label class="check"><input type="checkbox" id="conventionne" checked><span data-i18n="conv">Opticien conventionné (retenu sur cet appareil)</span></label>
-            <label class="field"><span data-i18n="montures">Montures déjà remboursées (moins de 18 ans)</span>
-              <select id="montureInterventions"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select></label>
+            <div class="item">
+              <div class="tete"><label class="check"><input type="checkbox" id="conventionne" checked><span data-i18n="conv"></span></label><button type="button" class="aide-btn" aria-controls="aConventionne" aria-expanded="false" aria-label="?">?</button></div>
+              <p class="hint aide" id="aConventionne" data-i18n="aConventionne" hidden></p>
+            </div>
+            <div class="field">
+              <div class="tete"><label for="montureInterventions" data-i18n="montures"></label><button type="button" class="aide-btn" aria-controls="aMontures" aria-expanded="false" aria-label="?">?</button></div>
+              <select id="montureInterventions"><option value="0">0</option><option value="1">1</option><option value="2">2</option></select>
+              <p class="hint aide" id="aMontures" data-i18n="aMontures" hidden></p>
+            </div>
           </div>
         </div>
       </details>
@@ -303,11 +343,19 @@ const UI = {
     lgCorrection: 'Verres', uni: 'Unifocal', bi: 'Bifocal', prog: 'Progressif', sph: 'Sphère', cyl: 'Cylindre',
     hintRx: 'Unifocal : puissance du verre délivré (de loin, de près ou intermédiaire). Bifocal et progressif : valeurs de loin. Laisse une ligne vide pour un seul verre.',
     materiau: 'Matériau', indice: 'Indice', nsp: 'Je ne sais pas', nsp2: 'Je ne sais pas', organique: 'Organique', mineral: 'Minéral', codeInami: 'code',
-    lgPrescription: 'Prescription', casParticuliers: 'Cas particuliers', hintAvance: "À remplir seulement si ça s'applique : renouvellement, date de délivrance différente, opticien non conventionné…", stRenouvellement: 'Renouvellement', stDates: 'Dates et magasin', actifs: (n) => `· ${n} renseigné${n > 1 ? 's' : ''}`, lPrix: 'Prix', lInami: 'INAMI', lMut: 'Mutualité', presc: "Prescription d'un ophtalmologue (annexe 15bis)",
+    lgPrescription: 'Prescription', casParticuliers: 'Cas particuliers', hintAvance: "À remplir seulement si ça s'applique : renouvellement, date de délivrance différente, opticien non conventionné…", stRenouvellement: 'Renouvellement', stDates: 'Dates et magasin',
+    aDernierePaire: "Date de la dernière paire remboursée par l'INAMI. Il faut 2 ans avant 18 ans, 5 ans après, sauf changement de correction.",
+    aDernierAvantage: 'Chaque mutualité a son propre délai entre deux avantages (par exemple 3 ans à la MC).',
+    aChangementOD: "Coche si la correction de l'œil droit a changé d'au moins 0,5 D (sphère, cylindre ou prisme, de loin ou de près). L'INAMI rembourse alors avant la fin du délai. Avant 18 ans, un seul œil changé suffit pour les deux verres. Un changement d'axe seul, ou de la vision intermédiaire seule d'un progressif, ne compte pas.",
+    aChangementOG: "Coche si la correction de l'œil gauche a changé d'au moins 0,5 D (sphère, cylindre ou prisme, de loin ou de près). L'INAMI rembourse alors avant la fin du délai. Avant 18 ans, un seul œil changé suffit pour les deux verres. Un changement d'axe seul, ou de la vision intermédiaire seule d'un progressif, ne compte pas.",
+    aAutreDistance: "Paire unifocale en plus d'une paire déjà remboursée, pour une autre distance (loin, intermédiaire ou près). Remboursable avant la fin du délai si l'ophtalmo l'écrit clairement sur la prescription. 3 verres unifocaux au maximum.",
+    aDelivrance: "Jour où le client reçoit ses lunettes (date de l'annexe 15), pas forcément celle de la facture. Compte pour son âge (18 et 65 ans) et pour les délais. Par défaut : aujourd'hui.",
+    aCommande: "Jour où le client t'apporte la prescription. Elle doit avoir moins de 6 mois ce jour-là, même si les lunettes sont remises plus tard. Vide = jour de la délivrance.",
+    aConventionne: "À décocher une seule fois si ton magasin n'est pas conventionné : l'INAMI rembourse alors 75 %, sauf pour les patients BIM. Ton choix est retenu sur cet appareil.",
+    aMontures: "Avant 18 ans, l'INAMI rembourse 2 montures au maximum.", actifs: (n) => `· ${n} renseigné${n > 1 ? 's' : ''}`, lPrix: 'Prix', lInami: 'INAMI', lMut: 'Mutualité', presc: "Prescription d'un ophtalmologue (annexe 15bis)",
     datePresc: 'Date de la prescription', dernierePaire: 'Dernière paire remboursée (si connue)',
-    dateRecep: 'Prescription reçue le (si différent de la délivrance)',
-    changementOD: "OD : correction changée d'au moins 0,5 D depuis", changementOG: "OG : correction changée d'au moins 0,5 D depuis",
-    hintChangement: "Compte un changement de sphère, de cylindre ou de prisme, de loin ou de près. Un changement d'axe seul, ou de la vision intermédiaire seule d'un progressif, ne compte pas.",
+    dateRecep: 'Date de la commande (prescription reçue)',
+    changementOD: "OD : correction changée d'au moins 0,5 D", changementOG: "OG : correction changée d'au moins 0,5 D",
     autreDistance: 'Unifocal pour une autre distance (loin, près, intermédiaire), mentionnée sur la prescription',
     lgMut: 'Mutualité', mutClient: 'Mutualité', dernierAvantage: 'Dernier avantage mutualité (si connu)',
     lgPrix: 'Prix', prixVerres: 'Prix des verres (€)', prixMonture: 'Prix de la monture (€)',
@@ -337,11 +385,19 @@ const UI = {
     lgCorrection: 'Glazen', uni: 'Enkelvoudig', bi: 'Bifocaal', prog: 'Multifocaal', sph: 'Sfeer', cyl: 'Cilinder',
     hintRx: 'Enkelvoudig: sterkte van het afgeleverde glas (veraf, dichtbij of tussenafstand). Bifocaal en multifocaal: waarden voor veraf. Laat een regel leeg voor één glas.',
     materiau: 'Materiaal', indice: 'Index', nsp: 'Weet ik niet', nsp2: 'Weet ik niet', organique: 'Organisch', mineral: 'Mineraal', codeInami: 'code',
-    lgPrescription: 'Voorschrift', casParticuliers: 'Bijzondere gevallen', hintAvance: 'Alleen invullen als het van toepassing is: hernieuwing, andere afleveringsdatum, opticien zonder conventie…', stRenouvellement: 'Hernieuwing', stDates: 'Datums en winkel', actifs: (n) => `· ${n} ingevuld`, lPrix: 'Prijs', lInami: 'RIZIV', lMut: 'Ziekenfonds', presc: 'Voorschrift van een oogarts (bijlage 15bis)',
+    lgPrescription: 'Voorschrift', casParticuliers: 'Bijzondere gevallen', hintAvance: 'Alleen invullen als het van toepassing is: hernieuwing, andere afleveringsdatum, opticien zonder conventie…', stRenouvellement: 'Hernieuwing', stDates: 'Datums en winkel',
+    aDernierePaire: 'Datum van de laatste bril die het RIZIV terugbetaalde. Er moet 2 jaar tussen zitten vóór 18 jaar, 5 jaar daarna, behalve bij een gewijzigde correctie.',
+    aDernierAvantage: 'Elk ziekenfonds heeft een eigen termijn tussen twee voordelen (bijvoorbeeld 3 jaar bij CM-MC).',
+    aChangementOD: 'Aanvinken als de correctie van het rechteroog minstens 0,5 D veranderde (sfeer, cilinder of prisma, veraf of dichtbij). Het RIZIV betaalt dan terug vóór het einde van de termijn. Vóór 18 jaar volstaat één gewijzigd oog voor beide glazen. Alleen een asverandering, of alleen de tussenafstand van een multifocaal glas, telt niet.',
+    aChangementOG: 'Aanvinken als de correctie van het linkeroog minstens 0,5 D veranderde (sfeer, cilinder of prisma, veraf of dichtbij). Het RIZIV betaalt dan terug vóór het einde van de termijn. Vóór 18 jaar volstaat één gewijzigd oog voor beide glazen. Alleen een asverandering, of alleen de tussenafstand van een multifocaal glas, telt niet.',
+    aAutreDistance: 'Extra enkelvoudige bril naast een al terugbetaalde bril, voor een andere afstand (veraf, tussenafstand of dichtbij). Terugbetaalbaar vóór het einde van de termijn als de oogarts het duidelijk op het voorschrift vermeldt. Maximaal 3 enkelvoudige glazen.',
+    aDelivrance: 'Dag waarop de klant de bril ontvangt (datum van bijlage 15), niet noodzakelijk die van de factuur. Telt voor de leeftijd (18 en 65 jaar) en voor de termijnen. Standaard: vandaag.',
+    aCommande: 'Dag waarop de klant het voorschrift binnenbrengt. Het moet die dag minder dan 6 maanden oud zijn, ook als de bril later wordt afgeleverd. Leeg = dag van de aflevering.',
+    aConventionne: 'Eén keer uitvinken als je winkel geen conventie heeft: het RIZIV betaalt dan 75 % terug, behalve voor patiënten met verhoogde tegemoetkoming. Je keuze wordt op dit toestel onthouden.',
+    aMontures: 'Vóór 18 jaar betaalt het RIZIV maximaal 2 monturen terug.', actifs: (n) => `· ${n} ingevuld`, lPrix: 'Prijs', lInami: 'RIZIV', lMut: 'Ziekenfonds', presc: 'Voorschrift van een oogarts (bijlage 15bis)',
     datePresc: 'Datum van het voorschrift', dernierePaire: 'Laatste terugbetaalde bril (indien gekend)',
-    dateRecep: 'Voorschrift ontvangen op (indien anders dan de aflevering)',
-    changementOD: 'OD: correctie sindsdien minstens 0,5 D gewijzigd', changementOG: 'OG: correctie sindsdien minstens 0,5 D gewijzigd',
-    hintChangement: 'Telt mee: een wijziging van sfeer, cilinder of prisma, veraf of dichtbij. Alleen een asverandering, of alleen de tussenafstand van een multifocaal glas, telt niet.',
+    dateRecep: 'Datum van de bestelling (voorschrift ontvangen)',
+    changementOD: 'OD: correctie minstens 0,5 D gewijzigd', changementOG: 'OG: correctie minstens 0,5 D gewijzigd',
     autreDistance: 'Enkelvoudig glas voor een andere afstand (veraf, dichtbij, tussenafstand), vermeld op het voorschrift',
     lgMut: 'Ziekenfonds', mutClient: 'Ziekenfonds', dernierAvantage: 'Laatste voordeel ziekenfonds (indien gekend)',
     lgPrix: 'Prijs', prixVerres: 'Prijs van de glazen (€)', prixMonture: 'Prijs van het montuur (€)',
@@ -543,6 +599,12 @@ if ('IntersectionObserver' in window) {
   new IntersectionObserver(([e]) => { barre.resultatVisible = e.isIntersecting; majBarre(); }).observe($('totaux'));
 }
 $('btnDetail').addEventListener('click', () => document.querySelector('.result').scrollIntoView({ behavior: 'smooth' }));
+
+document.querySelectorAll('.aide-btn').forEach((b) => b.addEventListener('click', () => {
+  const texte = $(b.getAttribute('aria-controls'));
+  texte.hidden = !texte.hidden;
+  b.setAttribute('aria-expanded', String(!texte.hidden));
+}));
 
 let exemple = true;
 $('form').addEventListener('input', () => { if (exemple) { exemple = false; $('exampleFlag').hidden = true; } majPartenaire(); majAvance(false); calculer(); });
