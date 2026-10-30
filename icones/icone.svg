@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Icône du simulateur : une paire de lunettes et le signe €, sur le bleu-vert de la page -->
+  <rect width="512" height="512" fill="#0b6f7a"/>
+  <g fill="none" stroke="#ffffff" stroke-width="26" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="166" cy="232" r="74"/>
+    <circle cx="346" cy="232" r="74"/>
+    <path d="M240 226 q16 -18 32 0"/>
+    <path d="M92 214 L60 190"/>
+    <path d="M420 214 L452 190"/>
+  </g>
+  <text x="256" y="420" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="120" fill="#ffffff">€</text>
+</svg>

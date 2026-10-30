@@ -1,6 +1,7 @@
 // Assemble une page HTML autonome (polices + données + calcul + interface) dans dist/
 // dist/simulateur.html pour un usage local, dist/index.html pour la mise en ligne.
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 
 const lire = (p) => readFileSync(new URL(p, import.meta.url), 'utf8');
 
@@ -24,4 +25,13 @@ const page = lire('./src/page.html')
 mkdirSync(new URL('./dist/', import.meta.url), { recursive: true });
 writeFileSync(new URL('./dist/simulateur.html', import.meta.url), page);
 writeFileSync(new URL('./dist/index.html', import.meta.url), page);
-console.log(`dist/simulateur.html et dist/index.html écrits (${Math.round(page.length / 1024)} Ko)`);
+
+// Application installable : manifeste, icônes et mode hors ligne. La version change à chaque
+// modification de la page, ce qui remplace la copie gardée sur les appareils.
+const version = createHash('sha256').update(page).digest('hex').slice(0, 12);
+writeFileSync(new URL('./dist/sw.js', import.meta.url), lire('./src/sw.js').replace('/*VERSION*/', version));
+copyFileSync(new URL('./src/manifest.webmanifest', import.meta.url), new URL('./dist/manifest.webmanifest', import.meta.url));
+for (const t of [180, 192, 512]) {
+  copyFileSync(new URL(`./icones/icone-${t}.png`, import.meta.url), new URL(`./dist/icone-${t}.png`, import.meta.url));
+}
+console.log(`dist/simulateur.html et dist/index.html écrits, application installable (version ${version}) (${Math.round(page.length / 1024)} Ko)`);

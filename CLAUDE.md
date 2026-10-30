@@ -22,6 +22,7 @@ Pas de linter ni de dépendances npm : ne pas en ajouter sans raison. Pour véri
 - `MESSAGES.fr` / `MESSAGES.nl` dans `calcul.js` : tous les textes renvoyés par le calcul. Un test exige que chaque clé existe dans les deux langues.
 - `src/page.html` : l'interface (HTML, CSS et JS dans un seul fichier), avec son propre dictionnaire `UI.fr` / `UI.nl` et les attributs `data-i18n`. Elle contient des marqueurs remplacés au build : `/*FONTS_CSS*/`, `/*INAMI_JSON*/`, `/*MUTUALITES_JSON*/`, `/*CALCUL_JS*/`. Elle ne s'ouvre donc pas directement : toujours passer par `npm run build`.
 - `build.js` : intègre les polices de `fonts/` en base64 (aucun appel à Google Fonts, pour le RGPD et l'usage hors ligne), les deux JSON, et `calcul.js` sans ses `export`. Le résultat est une page autonome.
+- Application installable (PWA) : `src/manifest.webmanifest`, `src/sw.js` (en ligne : réseau d'abord pour avoir les tarifs à jour ; hors ligne : copie gardée) et `icones/` (PNG générés une fois depuis `icones/icone.svg`). `build.js` les copie dans `dist/` et met dans `sw.js` une version tirée du contenu de la page, ce qui remplace la copie gardée sur les appareils à chaque mise à jour. Le service worker ne s'enregistre qu'en https ou sur localhost.
 
 ## Conventions
 

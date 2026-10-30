@@ -19,6 +19,7 @@ Les règles INAMI (article 30 de la nomenclature) et les avantages des mutualit�
 - Interface et explications en français et en néerlandais
 - Fiche imprimable pour le client : récapitulatif de la saisie, reste à payer, détail et documents à remettre
 - Sur téléphone, le total reste affiché en bas de l'écran pendant la saisie
+- Application installable sur téléphone, tablette ou ordinateur (Safari : Partager → « Sur l'écran d'accueil » ; Chrome : « Installer ») : icône, plein écran, fonctionne hors ligne, se met à jour seule quand le site change
 - Aucun appel à un serveur externe : polices intégrées à la page, fonctionne hors ligne une fois ouverte
 
 Hors v1 : lentilles de contact, verres lenticulaires, filtres médicaux, prismes, basse vision.

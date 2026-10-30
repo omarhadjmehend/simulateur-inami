@@ -4,6 +4,13 @@
 <!-- Indispensable sur téléphone : sans cette ligne, Safari affiche la page comme sur un écran d'ordinateur réduit -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Simulateur INAMI optique</title>
+<!-- Application installable (écran d'accueil, plein écran, hors ligne) -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b6f7a">
+<link rel="icon" href="icone-192.png">
+<link rel="apple-touch-icon" href="icone-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="INAMI optique">
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 /*FONTS_CSS*/
@@ -629,5 +636,7 @@ $('btnImprimer').addEventListener('click', () => window.print());
 $('btnExemple').addEventListener('click', () => { remplir(EXEMPLE); exemple = true; $('exampleFlag').hidden = false; });
 appliquerLangue();
 remplir(EXEMPLE);
+// Mode hors ligne, seulement sur le site publié (pas en ouvrant le fichier en local)
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>
 
