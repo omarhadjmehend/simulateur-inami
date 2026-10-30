@@ -12,7 +12,7 @@ node --test --test-name-pattern="Helan" tests/calcul.test.js # un seul test (ou 
 npm run build                                                # dist/simulateur.html et dist/index.html
 ```
 
-Pas de linter ni de dépendances npm : ne pas en ajouter sans raison. Pour vérifier l'interface, ouvrir `dist/index.html` dans Chromium via Playwright (préinstallé) : à 390 px et à 1200 px, en FR et en NL.
+Pas de linter ni de dépendances npm : ne pas en ajouter sans raison. Pour vérifier l'interface, ouvrir `dist/index.html` dans Chromium via Playwright (préinstallé) : en émulation téléphone réelle (`devices['iPhone 13']`, qui respecte la balise viewport, contrairement à une simple fenêtre de 390 px) et à 1200 px, en FR et en NL. WebKit n'est pas installé : ce qui est propre à Safari se vérifie sur l'iPhone de l'utilisateur.
 
 ## Architecture
 
