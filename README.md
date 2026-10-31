@@ -1,4 +1,4 @@
-# Simulateur INAMI optique
+# Mutopti — simulateur INAMI optique
 
 Outil web qui calcule au comptoir le remboursement d'une paire de lunettes en Belgique : intervention INAMI, avantage de la mutualité et reste à payer. Il ne stocke aucune donnée : tout est calculé dans le navigateur.
 
@@ -26,6 +26,7 @@ Hors v1 : lentilles de contact, verres lenticulaires, filtres médicaux, prismes
 
 ## Structure
 
+- `src/accueil.html` : page d'accueil de Mutopti ; `src/legal.html` : mentions légales et confidentialité (identité de l'éditeur dans `data/editeur.json`) ; `src/site.css` : styles communs
 - `data/inami-2026.json` : seuils, délais et les codes du tarif opticiens du 01/01/2026 (montant plein et montant à 75 %), avec la source
 - `data/mutualites.json` : avantages des mutualités, avec source, date de vérification et fiabilité
 - `src/calcul.js` : la logique de calcul, une fonction pure sans dépendance

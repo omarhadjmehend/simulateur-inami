@@ -3,14 +3,14 @@
 <meta charset="utf-8">
 <!-- Indispensable sur téléphone : sans cette ligne, Safari affiche la page comme sur un écran d'ordinateur réduit -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Simulateur INAMI optique</title>
+<title>Mutopti — simulateur INAMI optique</title>
 <!-- Application installable (écran d'accueil, plein écran, hors ligne) -->
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0b6f7a">
 <link rel="icon" href="icone-192.png">
 <link rel="apple-touch-icon" href="icone-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="INAMI optique">
+<meta name="apple-mobile-web-app-title" content="Mutopti">
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 /*FONTS_CSS*/
@@ -58,6 +58,7 @@ body {
 .wrap { max-width: 1080px; margin: 0 auto; display: grid; gap: 20px; }
 header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; }
 h1 { font-family: var(--font-display); font-weight: 700; font-size: 1.9rem; line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: 0.01em; }
+.marque { font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--accent); text-decoration: none; letter-spacing: 0.02em; }
 .sub { color: var(--muted); margin: 4px 0 0; max-width: 60ch; }
 .actions { display: flex; gap: 8px; flex-wrap: wrap; }
 button { font: inherit; cursor: pointer; }
@@ -179,6 +180,7 @@ a { color: var(--accent); }
 <div class="wrap">
   <header>
     <div>
+      <a class="marque" href="./">Mutopti</a>
       <h1 data-i18n="titre">Simulateur INAMI optique</h1>
       <p class="sub" data-i18n="sous">Remboursement INAMI et mutualité d'une paire de lunettes, calculé au comptoir. Rien n'est enregistré.</p>
     </div>
@@ -330,6 +332,7 @@ a { color: var(--accent); }
         <h2 data-i18n="hDocs">Documents à remettre</h2>
         <ul class="docs" id="documents"></ul>
         <p class="disclaimer" id="disclaimer"></p>
+        <p class="disclaimer"><a href="legal.html" data-i18n="lienLegal">Mentions légales et confidentialité</a></p>
       </section>
     </aside>
   </div>
@@ -346,7 +349,7 @@ const MUTUALITES = /*MUTUALITES_JSON*/.mutualites;
 
 const UI = {
   fr: {
-    titre: 'Simulateur INAMI optique',
+    titre: 'Simulateur INAMI optique', lienLegal: 'Mentions légales et confidentialité',
     sous: "Remboursement INAMI et mutualité d'une paire de lunettes, calculé au comptoir. Rien n'est enregistré.",
     exemple: "Exemple chargé : appuie sur « Nouveau client » pour commencer.", btnExemple: 'Exemple', btnReset: 'Nouveau client', btnImprimer: 'Imprimer', btnDetail: 'Voir le détail',
     hRecap: 'Récapitulatif', rDelivrance: 'Délivrance', rAge: 'Âge', ans: (n) => `${n} ans`, rVerre: 'Verres', rMut: 'Mutualité',
@@ -388,7 +391,7 @@ const UI = {
     locale: 'fr-BE',
   },
   nl: {
-    titre: 'RIZIV-simulator optiek',
+    titre: 'RIZIV-simulator optiek', lienLegal: 'Wettelijke vermeldingen en privacy',
     sous: 'Terugbetaling door het RIZIV en het ziekenfonds voor een bril, berekend aan de toonbank. Er wordt niets bewaard.',
     exemple: 'Voorbeeld geladen: druk op « Nieuwe klant » om te beginnen.', btnExemple: 'Voorbeeld', btnReset: 'Nieuwe klant', btnImprimer: 'Afdrukken', btnDetail: 'Toon detail',
     hRecap: 'Overzicht', rDelivrance: 'Aflevering', rAge: 'Leeftijd', ans: (n) => `${n} jaar`, rVerre: 'Glazen', rMut: 'Ziekenfonds',
@@ -444,7 +447,7 @@ const sel = $('mutualiteId');
 
 function appliquerLangue() {
   document.documentElement.lang = lang;
-  document.title = U().titre;
+  document.title = 'Mutopti — ' + U().titre;
   document.querySelectorAll('[data-i18n]').forEach((el) => { const t = U()[el.dataset.i18n]; if (typeof t === 'string') el.textContent = t; });
   const v = sel.value;
   sel.innerHTML = `<option value="">${U().jeNeSaisPas}</option>` + MUTUALITES.map((m) => `<option value="${m.id}">${m.nom}</option>`).join('');

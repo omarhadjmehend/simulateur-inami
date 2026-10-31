@@ -2,14 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Simulateur du remboursement d'une paire de lunettes en Belgique (INAMI + mutualité), utilisé au comptoir par un opticien. Projet en français : code, noms de variables, commentaires, commits et échanges avec l'utilisateur. L'utilisateur est opticien, pas développeur, et travaille souvent depuis l'app iPhone : expliquer simplement, en français.
+Mutopti : simulateur du remboursement d'une paire de lunettes en Belgique (INAMI + mutualité), utilisé au comptoir par un opticien. Objectif : un site avec des utilisateurs, simulateur gratuit puis une offre Pro payante (comptes magasin, sans données patient). Projet en français : code, noms de variables, commentaires, commits et échanges avec l'utilisateur. L'utilisateur est opticien, pas développeur, et travaille souvent depuis l'app iPhone : expliquer simplement, en français.
 
 ## Commandes
 
 ```
 npm test                                                     # node:test, Node 20+, aucune dépendance
 node --test --test-name-pattern="Helan" tests/calcul.test.js # un seul test (ou un groupe) par nom
-npm run build                                                # dist/simulateur.html et dist/index.html
+npm run build                                                # dist/ : accueil, simulateur, page légale, PWA
 ```
 
 Pas de linter ni de dépendances npm : ne pas en ajouter sans raison. Pour vérifier l'interface, ouvrir `dist/index.html` dans Chromium via Playwright (préinstallé) : en émulation téléphone réelle (`devices['iPhone 13']`, qui respecte la balise viewport, contrairement à une simple fenêtre de 390 px) et à 1200 px, en FR et en NL. WebKit n'est pas installé : ce qui est propre à Safari se vérifie sur l'iPhone de l'utilisateur.
@@ -21,7 +21,8 @@ Pas de linter ni de dépendances npm : ne pas en ajouter sans raison. Pour véri
 - `data/mutualites.json` : une entrée par mutualité. `cumul_inami` vaut `true` (s'ajoute à l'INAMI, plafonné au reste à payer), `false` (paie seulement si l'INAMI ne rembourse rien) ou `null` (inconnu : le simulateur affiche deux scénarios). `periode_type` vaut `glissant` ou `calendaire`. Le champ `note` en tête du fichier documente les autres champs. `fiabilite` qui commence par « officiel » ou « fiable » supprime l'avertissement « à vérifier ».
 - `MESSAGES.fr` / `MESSAGES.nl` dans `calcul.js` : tous les textes renvoyés par le calcul. Un test exige que chaque clé existe dans les deux langues.
 - `src/page.html` : l'interface (HTML, CSS et JS dans un seul fichier), avec son propre dictionnaire `UI.fr` / `UI.nl` et les attributs `data-i18n`. Elle contient des marqueurs remplacés au build : `/*FONTS_CSS*/`, `/*INAMI_JSON*/`, `/*MUTUALITES_JSON*/`, `/*CALCUL_JS*/`. Elle ne s'ouvre donc pas directement : toujours passer par `npm run build`.
-- `build.js` : intègre les polices de `fonts/` en base64 (aucun appel à Google Fonts, pour le RGPD et l'usage hors ligne), les deux JSON, et `calcul.js` sans ses `export`. Le résultat est une page autonome.
+- Site Mutopti (nom commercial depuis le 31/10/2026) : `src/accueil.html` → `dist/index.html` (présentation), `src/page.html` → `dist/simulateur.html` (le simulateur), `src/legal.html` → `dist/legal.html` (mentions légales et confidentialité, remplies depuis `data/editeur.json` ; un champ vide s'affiche « [à compléter] »). `src/site.css` = styles communs de l'accueil et de la page légale. Chaque page a son dictionnaire FR/NL, et la langue choisie est partagée via `localStorage`.
+- `build.js` : assemble les trois pages, intègre les polices de `fonts/` en base64 (aucun appel à Google Fonts, pour le RGPD et l'usage hors ligne), les deux JSON et `calcul.js` sans ses `export`.
 - Application installable (PWA) : `src/manifest.webmanifest`, `src/sw.js` (en ligne : réseau d'abord pour avoir les tarifs à jour ; hors ligne : copie gardée) et `icones/` (PNG générés une fois depuis `icones/icone.svg`). `build.js` les copie dans `dist/` et met dans `sw.js` une version tirée du contenu de la page, ce qui remplace la copie gardée sur les appareils à chaque mise à jour. Le service worker ne s'enregistre qu'en https ou sur localhost.
 
 ## Conventions

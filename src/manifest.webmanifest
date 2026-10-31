@@ -1,9 +1,9 @@
 {
-  "name": "Simulateur INAMI optique",
-  "short_name": "INAMI optique",
+  "name": "Mutopti — simulateur INAMI optique",
+  "short_name": "Mutopti",
   "description": "Remboursement INAMI et mutualité d'une paire de lunettes, calculé au comptoir.",
   "lang": "fr",
-  "start_url": "./",
+  "start_url": "./simulateur.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#eef3f4",
