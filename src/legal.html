@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mutopti — mentions légales et confidentialité</title>
+<link rel="icon" href="icone-192.png">
+<style>
+/*FONTS_CSS*/
+/*SITE_CSS*/
+/* Page légale : texte simple, une langue affichée à la fois */
+main { max-width: 70ch; }
+main h1 { font-size: 2rem; margin: 16px 0 8px; }
+main h2 { font-size: 1.35rem; margin: 32px 0 8px; }
+main p, main li { color: var(--ink); }
+main ul { padding-left: 1.2em; display: grid; gap: 6px; }
+.maj { color: var(--muted); font-size: 0.9rem; }
+</style>
+
+<div class="wrap">
+  <header class="barre-haut">
+    <a class="marque" href="./"><img src="icone-192.png" alt="">Mutopti</a>
+    <div class="seg" role="radiogroup" aria-label="Langue / Taal"><label><input type="radio" name="lang" id="langFr" value="fr" checked>FR</label><label><input type="radio" name="lang" id="langNl" value="nl">NL</label></div>
+  </header>
+
+  <main lang="fr" data-lang="fr">
+    <h1>Mentions légales et confidentialité</h1>
+    <p class="maj">Dernière mise à jour : /*DATE_MAJ*/</p>
+
+    <h2>Éditeur</h2>
+    <p>Mutopti est édité par /*EDITEUR*/.<br>
+    Adresse : /*ADRESSE*/<br>
+    Numéro d'entreprise (BCE) : /*BCE*/<br>
+    Contact : /*CONTACT*/</p>
+
+    <h2>Ce que fait Mutopti</h2>
+    <p>Mutopti estime le remboursement de l'INAMI et l'avantage de la mutualité pour une paire de lunettes, d'après le tarif officiel des opticiens, l'article 30 de la nomenclature et les conditions publiées par les mutualités. Les sources et leur date de vérification sont indiquées dans le simulateur.</p>
+    <p>Le résultat est une <strong>estimation indicative et non contractuelle</strong>. Le remboursement final est décidé par la mutualité du patient. Mutopti est un outil indépendant, non affilié à l'INAMI ni à une mutualité ; les noms des mutualités sont cités uniquement pour décrire leurs avantages.</p>
+
+    <h2>Données personnelles</h2>
+    <ul>
+      <li><strong>Aucune donnée patient n'est collectée.</strong> Le calcul se fait entièrement sur votre appareil : les dates, corrections, prix et mutualité saisis ne sont envoyés à aucun serveur et disparaissent quand vous fermez la page.</li>
+      <li><strong>Sur votre appareil uniquement</strong>, Mutopti retient deux réglages : la langue choisie et le statut « opticien conventionné ». Vous pouvez les effacer en vidant les données du site dans votre navigateur.</li>
+      <li>Pour fonctionner hors ligne, une copie de la page est gardée sur votre appareil. Elle ne contient aucune donnée saisie.</li>
+      <li><strong>Pas de cookies, pas de mesure d'audience, pas de publicité.</strong> La page ne fait appel à aucun service extérieur (polices comprises).</li>
+      <li>L'hébergeur du site (/*HEBERGEUR*/) reçoit, comme pour tout site web, l'adresse IP et le navigateur des visiteurs, pour assurer le service et sa sécurité. Mutopti n'a pas accès à ces journaux.</li>
+    </ul>
+    <p>Pour toute question sur vos données, ou pour exercer vos droits, écrivez à /*CONTACT*/. Vous pouvez aussi vous adresser à l'Autorité de protection des données (autoriteprotectiondonnees.be).</p>
+  </main>
+
+  <main lang="nl" data-lang="nl" hidden>
+    <h1>Wettelijke vermeldingen en privacy</h1>
+    <p class="maj">Laatst bijgewerkt: /*DATE_MAJ*/</p>
+
+    <h2>Uitgever</h2>
+    <p>Mutopti wordt uitgegeven door /*EDITEUR*/.<br>
+    Adres: /*ADRESSE*/<br>
+    Ondernemingsnummer (KBO): /*BCE*/<br>
+    Contact: /*CONTACT*/</p>
+
+    <h2>Wat Mutopti doet</h2>
+    <p>Mutopti schat de terugbetaling door het RIZIV en het voordeel van het ziekenfonds voor een bril, op basis van het officiële tarief voor opticiens, artikel 30 van de nomenclatuur en de voorwaarden die de ziekenfondsen publiceren. De bronnen en hun controledatum staan in de simulator.</p>
+    <p>Het resultaat is een <strong>indicatieve, niet-bindende schatting</strong>. Het ziekenfonds van de patiënt beslist over de uiteindelijke terugbetaling. Mutopti is een onafhankelijke tool, niet verbonden aan het RIZIV of een ziekenfonds; de namen van de ziekenfondsen worden alleen vermeld om hun voordelen te beschrijven.</p>
+
+    <h2>Persoonsgegevens</h2>
+    <ul>
+      <li><strong>Er worden geen patiëntgegevens verzameld.</strong> De berekening gebeurt volledig op je toestel: de ingevulde datums, correcties, prijzen en het ziekenfonds worden naar geen enkele server gestuurd en verdwijnen wanneer je de pagina sluit.</li>
+      <li><strong>Alleen op je toestel</strong> onthoudt Mutopti twee instellingen: de gekozen taal en de status “opticien met conventie”. Je kunt ze wissen door de websitegegevens in je browser te verwijderen.</li>
+      <li>Om offline te werken, wordt een kopie van de pagina op je toestel bewaard. Die bevat geen ingevulde gegevens.</li>
+      <li><strong>Geen cookies, geen bezoekersstatistieken, geen reclame.</strong> De pagina doet geen beroep op externe diensten (ook niet voor lettertypen).</li>
+      <li>De hostingprovider van de site (/*HEBERGEUR*/) ontvangt, zoals bij elke website, het IP-adres en de browser van de bezoekers, om de dienst en de beveiliging te verzekeren. Mutopti heeft geen toegang tot die logboeken.</li>
+    </ul>
+    <p>Voor vragen over je gegevens of om je rechten uit te oefenen, schrijf naar /*CONTACT*/. Je kunt ook terecht bij de Gegevensbeschermingsautoriteit (gegevensbeschermingsautoriteit.be).</p>
+  </main>
+
+  <footer>
+    <nav><a href="./">Mutopti</a><a href="simulateur.html" data-fr="Simulateur" data-nl="Simulator">Simulateur</a></nav>
+  </footer>
+</div>
+
+<script>
+let lang = 'fr';
+try { const l = localStorage.getItem('lang'); if (l === 'nl' || l === 'fr') lang = l; } catch (e) {}
+function appliquerLangue() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('main[data-lang]').forEach((m) => { m.hidden = m.dataset.lang !== lang; });
+  document.querySelectorAll('[data-fr]').forEach((el) => { el.textContent = el.dataset[lang]; });
+  document.title = lang === 'nl' ? 'Mutopti — wettelijke vermeldingen en privacy' : 'Mutopti — mentions légales et confidentialité';
+  document.getElementById(lang === 'nl' ? 'langNl' : 'langFr').checked = true;
+}
+document.querySelectorAll('input[name="lang"]').forEach((el) => el.addEventListener('change', () => {
+  lang = el.value;
+  try { localStorage.setItem('lang', lang); } catch (e) {}
+  appliquerLangue();
+}));
+appliquerLangue();
+</script>

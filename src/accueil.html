@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mutopti — remboursement INAMI et mutualité des lunettes</title>
+<meta name="description" content="Calculez au comptoir le remboursement INAMI et l'avantage mutualité d'une paire de lunettes. Gratuit, sans inscription, rien n'est enregistré.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b6f7a">
+<link rel="icon" href="icone-192.png">
+<link rel="apple-touch-icon" href="icone-180.png">
+<style>
+/*FONTS_CSS*/
+/*SITE_CSS*/
+/* Page d'accueil : présentation de Mutopti et accès au simulateur */
+.hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 40px; align-items: center; padding: 32px 0 16px; }
+@media (max-width: 760px) { .hero { grid-template-columns: minmax(0, 1fr); gap: 28px; padding-top: 16px; } }
+.hero h1 { font-size: clamp(2.1rem, 6vw, 3.2rem); }
+.hero p { color: var(--muted); font-size: 1.1rem; margin: 16px 0 24px; max-width: 34ch; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.ctas small { color: var(--muted); width: 100%; }
+/* Aperçu du résultat, tel que le simulateur l'affiche */
+.apercu { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; box-shadow: 0 12px 32px rgb(0 0 0 / 0.08); display: grid; gap: 12px; }
+.apercu .titre { font-family: var(--font-display); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+.apercu .label { color: var(--muted); font-size: 0.9rem; }
+.apercu .big { font-family: var(--font-display); font-weight: 700; font-size: 2.6rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.apercu dl { margin: 0; display: grid; gap: 4px; }
+.apercu dl div { display: flex; justify-content: space-between; gap: 12px; }
+.apercu dt { color: var(--muted); }
+.apercu dd { margin: 0; font-variant-numeric: tabular-nums; }
+.apercu .yeux { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.85rem; }
+.apercu .oeil { border-radius: 8px; padding: 8px 10px; }
+.apercu .ok { background: #e1f2e7; color: #1f5c37; }
+.apercu .no { background: #f7e6e1; color: #7d3322; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .apercu .ok { background: #173326; color: #9fe0bb; } :root:not([data-theme="light"]) .apercu .no { background: #3a211b; color: #f3b6a5; } }
+section.bloc { margin-top: 56px; }
+section.bloc > h2 { font-size: 1.7rem; margin-bottom: 20px; }
+.atouts { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.atout { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+.atout h3 { font-size: 1.25rem; margin-bottom: 6px; }
+.atout p { margin: 0; color: var(--muted); }
+.liste { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; max-width: 70ch; }
+.pro { background: var(--accent-soft); border-radius: 14px; padding: 24px; display: grid; gap: 12px; }
+.pro h2 { font-size: 1.7rem; }
+.pro p { margin: 0; max-width: 60ch; }
+</style>
+
+<div class="wrap">
+  <header class="barre-haut">
+    <a class="marque" href="./"><img src="icone-192.png" alt="">Mutopti</a>
+    <div class="seg" role="radiogroup" aria-label="Langue / Taal"><label><input type="radio" name="lang" id="langFr" value="fr" checked>FR</label><label><input type="radio" name="lang" id="langNl" value="nl">NL</label></div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <h1 data-i18n="titre">Le remboursement des lunettes, calculé en 30 secondes au comptoir</h1>
+        <p data-i18n="accroche">INAMI et mutualité, verre par verre : votre client sait tout de suite ce qu'il paiera.</p>
+        <div class="ctas">
+          <a class="btn primary" href="simulateur.html" data-i18n="ouvrir">Ouvrir le simulateur</a>
+          <small data-i18n="gratuit">Gratuit, sans inscription. Rien n'est enregistré.</small>
+        </div>
+      </div>
+      <div class="apercu" aria-hidden="true">
+        <span class="titre" data-i18n="aTitre">Reste à payer</span>
+        <span class="label" data-i18n="aPaie">Le client paie</span>
+        <span class="big">207,97 €</span>
+        <dl>
+          <div><dt data-i18n="aPrix">Prix</dt><dd>660,00 €</dd></div>
+          <div><dt data-i18n="aInami">INAMI</dt><dd>− 332,03 €</dd></div>
+          <div><dt data-i18n="aMut">Mutualité</dt><dd>− 120,00 €</dd></div>
+        </dl>
+        <div class="yeux">
+          <div class="oeil ok" data-i18n="aOd">OD · remboursé</div>
+          <div class="oeil no" data-i18n="aOg">OG · non remboursé</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bloc">
+      <h2 data-i18n="hPourquoi">Pourquoi Mutopti</h2>
+      <div class="atouts">
+        <div class="atout"><h3 data-i18n="t1">Juste</h3><p data-i18n="p1">Montants comparés un par un au tarif officiel de l'INAMI, règles relues dans l'article 30, mutualités vérifiées sur leurs statuts.</p></div>
+        <div class="atout"><h3 data-i18n="t2">Rapide</h3><p data-i18n="p2">Quatre étapes dans l'ordre du comptoir. Le reste à payer s'affiche pendant la saisie, la fiche client s'imprime en un clic.</p></div>
+        <div class="atout"><h3 data-i18n="t3">Privé</h3><p data-i18n="p3">Le calcul se fait sur votre appareil. Aucune donnée patient n'est envoyée ni gardée. Fonctionne même sans internet.</p></div>
+      </div>
+    </section>
+
+    <section class="bloc">
+      <h2 data-i18n="hCalcule">Ce qu'il calcule</h2>
+      <ul class="liste">
+        <li data-i18n="l1">Le droit au remboursement INAMI, œil par œil : adultes dès ±6,00 D, enfants, 65 ans et plus en verres multifocaux.</li>
+        <li data-i18n="l2">Le code INAMI exact selon le matériau, l'indice et le cylindre, avec le supplément cylindre et la monture enfant.</li>
+        <li data-i18n="l3">Les délais de renouvellement, la validité de la prescription et le changement de 0,5 D.</li>
+        <li data-i18n="l4">L'avantage de 12 mutualités : montant, période, magasin partenaire et cumul avec l'INAMI.</li>
+        <li data-i18n="l5">La réduction de 25 % chez un opticien non conventionné, sauf patient BIM.</li>
+      </ul>
+    </section>
+
+    <section class="bloc pro">
+      <h2 data-i18n="hPro">Bientôt : Mutopti Pro</h2>
+      <p data-i18n="pPro">Fiche client au nom de votre magasin, alerte dès que l'INAMI ou une mutualité change ses tarifs, réglages partagés entre vos postes. Le simulateur restera gratuit.</p>
+    </section>
+  </main>
+
+  <footer>
+    <span data-i18n="avert">Estimation indicative, non contractuelle : le remboursement final est décidé par la mutualité. Mutopti est un outil indépendant, non affilié à l'INAMI ni à une mutualité.</span>
+    <nav><a href="simulateur.html" data-i18n="fSim">Simulateur</a><a href="legal.html" data-i18n="fLegal">Mentions légales et confidentialité</a></nav>
+  </footer>
+</div>
+
+<script>
+const UI = {
+  fr: {
+    titre: 'Le remboursement des lunettes, calculé en 30 secondes au comptoir',
+    accroche: "INAMI et mutualité, verre par verre : votre client sait tout de suite ce qu'il paiera.",
+    ouvrir: 'Ouvrir le simulateur', gratuit: "Gratuit, sans inscription. Rien n'est enregistré.",
+    aTitre: 'Reste à payer', aPaie: 'Le client paie', aPrix: 'Prix', aInami: 'INAMI', aMut: 'Mutualité',
+    aOd: 'OD · remboursé', aOg: 'OG · non remboursé',
+    hPourquoi: 'Pourquoi Mutopti',
+    t1: 'Juste', p1: "Montants comparés un par un au tarif officiel de l'INAMI, règles relues dans l'article 30, mutualités vérifiées sur leurs statuts.",
+    t2: 'Rapide', p2: "Quatre étapes dans l'ordre du comptoir. Le reste à payer s'affiche pendant la saisie, la fiche client s'imprime en un clic.",
+    t3: 'Privé', p3: "Le calcul se fait sur votre appareil. Aucune donnée patient n'est envoyée ni gardée. Fonctionne même sans internet.",
+    hCalcule: "Ce qu'il calcule",
+    l1: 'Le droit au remboursement INAMI, œil par œil : adultes dès ±6,00 D, enfants, 65 ans et plus en verres multifocaux.',
+    l2: "Le code INAMI exact selon le matériau, l'indice et le cylindre, avec le supplément cylindre et la monture enfant.",
+    l3: 'Les délais de renouvellement, la validité de la prescription et le changement de 0,5 D.',
+    l4: "L'avantage de 12 mutualités : montant, période, magasin partenaire et cumul avec l'INAMI.",
+    l5: 'La réduction de 25 % chez un opticien non conventionné, sauf patient BIM.',
+    hPro: 'Bientôt : Mutopti Pro',
+    pPro: "Fiche client au nom de votre magasin, alerte dès que l'INAMI ou une mutualité change ses tarifs, réglages partagés entre vos postes. Le simulateur restera gratuit.",
+    avert: "Estimation indicative, non contractuelle : le remboursement final est décidé par la mutualité. Mutopti est un outil indépendant, non affilié à l'INAMI ni à une mutualité.",
+    fSim: 'Simulateur', fLegal: 'Mentions légales et confidentialité',
+    docTitre: 'Mutopti — remboursement INAMI et mutualité des lunettes',
+  },
+  nl: {
+    titre: 'De terugbetaling van een bril, in 30 seconden berekend aan de toonbank',
+    accroche: 'RIZIV en ziekenfonds, glas per glas: je klant weet meteen wat hij betaalt.',
+    ouvrir: 'Open de simulator', gratuit: 'Gratis, zonder registratie. Er wordt niets bewaard.',
+    aTitre: 'Te betalen', aPaie: 'De klant betaalt', aPrix: 'Prijs', aInami: 'RIZIV', aMut: 'Ziekenfonds',
+    aOd: 'OD · terugbetaald', aOg: 'OG · niet terugbetaald',
+    hPourquoi: 'Waarom Mutopti',
+    t1: 'Juist', p1: 'Bedragen één voor één vergeleken met het officiële RIZIV-tarief, regels nagelezen in artikel 30, ziekenfondsen gecontroleerd op hun statuten.',
+    t2: 'Snel', p2: 'Vier stappen in de volgorde van de toonbank. Wat de klant betaalt, verschijnt tijdens het invullen; de klantenfiche druk je in één klik af.',
+    t3: 'Privé', p3: 'De berekening gebeurt op je toestel. Er worden geen patiëntgegevens verstuurd of bewaard. Werkt zelfs zonder internet.',
+    hCalcule: 'Wat de simulator berekent',
+    l1: 'Het recht op RIZIV-terugbetaling, oog per oog: volwassenen vanaf ±6,00 D, kinderen, 65-plussers met multifocale glazen.',
+    l2: 'De juiste RIZIV-code volgens materiaal, index en cilinder, met het supplement cilinder en het kindermontuur.',
+    l3: 'De hernieuwingstermijnen, de geldigheid van het voorschrift en de wijziging van 0,5 D.',
+    l4: 'Het voordeel van 12 ziekenfondsen: bedrag, periode, partnerwinkel en cumul met het RIZIV.',
+    l5: 'De vermindering van 25 % bij een opticien zonder conventie, behalve voor patiënten met verhoogde tegemoetkoming.',
+    hPro: 'Binnenkort: Mutopti Pro',
+    pPro: 'Klantenfiche op naam van je winkel, een melding zodra het RIZIV of een ziekenfonds zijn tarieven wijzigt, instellingen gedeeld tussen je toestellen. De simulator blijft gratis.',
+    avert: 'Indicatieve, niet-bindende schatting: het ziekenfonds beslist over de uiteindelijke terugbetaling. Mutopti is een onafhankelijke tool, niet verbonden aan het RIZIV of een ziekenfonds.',
+    fSim: 'Simulator', fLegal: 'Wettelijke vermeldingen en privacy',
+    docTitre: 'Mutopti — terugbetaling RIZIV en ziekenfonds voor brillen',
+  },
+};
+// Même choix de langue que le simulateur (retenu sur l'appareil)
+let lang = 'fr';
+try { const l = localStorage.getItem('lang'); if (l === 'nl' || l === 'fr') lang = l; } catch (e) {}
+function appliquerLangue() {
+  document.documentElement.lang = lang;
+  document.title = UI[lang].docTitre;
+  document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = UI[lang][el.dataset.i18n]; });
+  document.getElementById(lang === 'nl' ? 'langNl' : 'langFr').checked = true;
+}
+document.querySelectorAll('input[name="lang"]').forEach((el) => el.addEventListener('change', () => {
+  lang = el.value;
+  try { localStorage.setItem('lang', lang); } catch (e) {}
+  appliquerLangue();
+}));
+appliquerLangue();
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
